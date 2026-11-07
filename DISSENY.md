@@ -5,6 +5,8 @@
 - `js/cartes.js`: les 437 cartes. Es genera amb `python3 eines/genera_dades.py` a partir de `eines/plantilles.py`.
 - `js/dades.js`: configuració (gemmes, butlletes, adreça del servidor).
 - `js/servidor.js`: connexió amb el full de Google.
+- `js/lab.js`: el laboratori (sobres il·limitats, com funciona, simulador i auditoria).
+- `docs/`: fitxa de l'alumnat (Word i PDF) i el generador a `docs/eines/` (`node fitxa.js`).
 - `css/estil.css` i `js/joc.js`: aspecte i pantalles. És el que es pot canviar amb IA.
 - `servidor/Codi.gs` i `servidor/INSTRUCCIONS.md`: l'script del full de Google.
 - `proves/motor.test.js`: comprovacions numèriques del motor (`node proves/motor.test.js`).
@@ -28,8 +30,9 @@ Les còpies són una altra cosa: quantes vegades tens un cromo. Es mostren a cad
 - Completar l'àlbum: mediana d'uns 1.080 sobres.
 
 ## Pantalles
-Sobres (1 o 5 alhora, revelació especial per a or i llegenda), Àlbum (filtres per club, raresa i què em falta; fitxa de cada cromo), El meu onze (4 formacions, banqueta per posicions), Fites (14 medalles sense premi) i Classe (rànquing per codis, només amb servidor).
+Sobres (1 o 5 alhora, revelació especial per a or i llegenda), Àlbum (filtres per club, raresa i què em falta; fitxa de cada cromo), El meu onze (4 formacions, banqueta per posicions), Fites (14 medalles sense premi), Classe (rànquing per codis, només amb servidor) i Laboratori.
+
+El Laboratori no toca la col·lecció ni gasta gemmes. En mode local surt sempre (`laboratoriLocal`); amb servidor l'activa el professor a la pestanya Configuració del full. Té quatre eines: sobres il·limitats amb comptadors, la taula de butlletes amb les fórmules, el simulador (butlletes, mida del sobre, garantia, canvi de repetides, preu) amb histogrames, i l'auditoria de 6 jocs misteriosos de 200 sobres cadascun.
 
 ## Pendent
 - Sobres especials: per pensar més endavant.
-- Laboratori i auditoria amb jocs trucats.

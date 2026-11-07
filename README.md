@@ -9,5 +9,7 @@ L'objectiu és entendre les caixes botí i els sobres de cromos des de les matem
 - Motor d'atzar (no s'ha de tocar en fer versions): `js/motor.js`
 - Connexió amb el full de Google: `servidor/INSTRUCCIONS.md`
 - Notes de disseny: `DISSENY.md`
+- Fitxa de l'alumnat: `docs/UWCL_Stars_fitxa_alumnat.docx`
+- Context per continuar el projecte: `CONTEXT.md`
 
 Joc educatiu sense diners reals. Valors de les jugadores: estimació pròpia.
