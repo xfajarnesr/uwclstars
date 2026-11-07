@@ -8,6 +8,7 @@
  *   Partides  codi | sobres | diferents | llegendes | valor onze | actualitzat | partida (JSON)
  *   Sobres    data | codi | sobre | carta 1..5 | raresa 1..5
  *   Resum     taula i recomptes de tota la classe
+ *   Configuració  interruptors per a tota la classe (laboratori)
  */
 
 var PREU_SOBRE = 1;
@@ -34,6 +35,12 @@ function prepara() {
   for (var i = 1; i <= CARTES_PER_SOBRE; i++) capSobres.push("carta " + i);
   for (var j = 1; j <= CARTES_PER_SOBRE; j++) capSobres.push("raresa " + j);
   full_(ss, "Sobres", capSobres);
+
+  var conf = full_(ss, "Configuració", ["opció", "activa", "què fa"]);
+  if (conf.getLastRow() < 2) {
+    conf.getRange(2, 1, 1, 3).setValues([["laboratori", false, "Mostra la pestanya Laboratori: sobres il·limitats, com funciona, simulador i auditoria."]]);
+    conf.getRange(2, 2).insertCheckboxes();
+  }
 
   var res = full_(ss, "Resum", ["", "valor"]);
   var primera = "D"; var ultima = String.fromCharCode("D".charCodeAt(0) + CARTES_PER_SOBRE - 1);
@@ -103,7 +110,7 @@ function entra_(codiBrut) {
     var text = fila.valors[6];
     if (text) partida = JSON.parse(text);
   }
-  return { ok: true, codi: codi, atorgades: gemmesAtorgades_(alumne), partida: partida };
+  return { ok: true, codi: codi, atorgades: gemmesAtorgades_(alumne), partida: partida, laboratori: opcio_("laboratori") };
 }
 
 function desa_(d) {
@@ -175,6 +182,14 @@ function gemmesAtorgades_(alumne) {
     if (r[2] === true) total += Number(r[1]) || 0;
   });
   return total;
+}
+
+function opcio_(nom) {
+  var sh = SpreadsheetApp.getActive().getSheetByName("Configuració");
+  if (!sh || sh.getLastRow() < 2) return false;
+  var v = sh.getRange(2, 1, sh.getLastRow() - 1, 2).getValues();
+  for (var i = 0; i < v.length; i++) if (String(v[i][0]).trim().toLowerCase() === nom) return v[i][1] === true;
+  return false;
 }
 
 function filaPartida_(codi) {

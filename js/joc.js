@@ -50,7 +50,7 @@
     vista: "sobres", darrer: null, lloc: null, suplent: null, detall: null,
     filtre: { club: "tots", raresa: "totes", mostra: "tots" },
     error: "", carregant: false, confirma: false, sincro: Servidor.actiu ? "ok" : "local", sincroError: "",
-    classe: null, ordreClasse: "valorOnze", avisos: [],
+    classe: null, ordreClasse: "valorOnze", avisos: [], laboratori: false,
   };
   var temporitzadors = [];
   var esperaOnze = null;
@@ -261,6 +261,7 @@
     var e = s.estat;
     var x = estadistiques();
     var pest = [["sobres", "Sobres"], ["album", "Àlbum"], ["onze", "El meu onze"], ["fites", "Fites"]];
+    if (s.laboratori) pest.push(["lab", "Laboratori"]);
     if (Servidor.actiu) pest.push(["classe", "Classe"]);
     var htmlPest = pest.map(function (p) {
       return '<button type="button" class="pestanya" data-vista="' + p[0] + '"' + (s.vista === p[0] ? ' aria-current="page"' : "") + ">" + p[1] + "</button>";
@@ -511,7 +512,7 @@
     if (s.darrer && !s.darrer.vist && s.vista !== "sobres") s.darrer.vist = true;
     var avisos = '<div class="avisos" id="avisos" aria-live="polite"></div><div class="esclat" id="esclat" aria-hidden="true"><span>Llegenda</span></div>';
     if (!s.estat) { app.innerHTML = vistaEntrada() + avisos; return; }
-    var vistes = { album: vistaAlbum, onze: vistaOnze, fites: vistaFites, classe: vistaClasse, sobres: vistaSobres };
+    var vistes = { album: vistaAlbum, onze: vistaOnze, fites: vistaFites, classe: vistaClasse, sobres: vistaSobres, lab: Lab.vista };
     var cos = (vistes[s.vista] || vistaSobres)();
     app.innerHTML = capcalera() + cos.replace(/<\/main>\s*$/, peu() + "</main>") + (s.detall ? vistaDetall() : "") + avisos;
     if (s.detall) { var t = document.getElementById("tanca-detall"); if (t) t.focus(); }
@@ -696,6 +697,8 @@
     if (!Servidor.actiu) p = local;
     s.codi = codi;
     s.atorgades = dades.atorgades;
+    s.laboratori = Servidor.actiu ? !!dades.laboratori : !!C.laboratoriLocal;
+    Lab.inicia(codi, pinta);
     s.estat = p ? p.estat : Motor.estatInicial(C);
     s.onze = p && p.onze || {};
     s.formacio = p && FORMACIONS[p.formacio] ? p.formacio : "4-3-3";
@@ -745,6 +748,7 @@
   });
 
   app.addEventListener("change", function (ev) {
+    if (ev.target.dataset && Lab.canvi(ev.target, false)) return;
     var f = ev.target.dataset && ev.target.dataset.filtre;
     if (!f) return;
     s.filtre[f] = ev.target.value;
@@ -753,10 +757,19 @@
     if (el) el.focus();
   });
 
+  app.addEventListener("input", function (ev) {
+    if (ev.target.type === "range" && Lab.canvi(ev.target, true)) {
+      var id = ev.target.id;
+      var el = document.getElementById(id);
+      if (el) el.focus();
+    }
+  });
+
   app.addEventListener("click", function (ev) {
     var b = ev.target.closest("button, .velo");
     if (!b) return;
     var d = b.dataset;
+    if (Lab.clic(b)) return;
     if (d.vista) {
       s.vista = d.vista; s.confirma = false; s.lloc = null; s.suplent = null;
       if (d.vista === "classe") { carregaClasse(); } else pinta();
@@ -780,7 +793,7 @@
       b.disabled = true; b.textContent = "Comprovant…";
       Servidor.entra(s.codi).then(function (r) {
         var abans = s.atorgades;
-        s.atorgades = r.atorgades; actualitzaGemmes(); pinta();
+        s.atorgades = r.atorgades; s.laboratori = !!r.laboratori; actualitzaGemmes(); pinta();
         avisa(r.atorgades > abans ? "Tens " + plural(r.atorgades - abans, "gemma nova", "gemmes noves") + "." : "Encara no hi ha gemmes noves.");
       }).catch(function () { pinta(); avisa("No s'ha pogut connectar amb el servidor."); });
     }

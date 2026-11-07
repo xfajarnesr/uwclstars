@@ -25,6 +25,10 @@ var CONFIG_JOC = {
   garantia: null,         // exemple: { raresa: "llegenda", cadaSobres: 40 }
   repetidesPerCanvi: 0,   // exemple: 20
 
+  // Mode local: mostra el laboratori. Amb servidor, l'activa el professor
+  // des de la pestanya «Configuració» del full.
+  laboratoriLocal: true,
+
   // Només en mode local: permet esborrar la partida per provar.
   permetReiniciar: true,
 };
