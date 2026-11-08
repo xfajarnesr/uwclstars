@@ -5,6 +5,7 @@
 var CONFIG_JOC = {
   nom: "UWCL Stars",
   temporada: "2026/27",
+  descripcio: "{cromos} cromos de les {grups} plantilles de la Champions femenina 2026/27. Obre sobres, omple l'àlbum i munta el teu onze.",
 
   // Adreça de l'aplicació web de Google Apps Script (acaba en /exec).
   // Buida = mode local: la partida només es desa al navegador.
@@ -62,7 +63,7 @@ if (typeof FILES_CARTES === "undefined" && typeof require === "function") {
 }
 
 var CARTES_JOC = FILES_CARTES.map(function (f, i) {
-  return { id: f[0], num: i + 1, club: f[1], pos: f[2], dorsal: f[3], nom: f[4], valor: f[5], raresa: f[6] };
+  return { id: f[0], num: i + 1, club: f[1], pos: f[2], dorsal: f[3], nom: f[4], valor: f[5], raresa: f[6], butlletes: f[7] };
 });
 
 if (typeof module === "object" && module.exports) {

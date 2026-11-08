@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UWCL Stars (plantilla)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ===== ESTIL: colors, lletres i aspecte. Es pot canviar tant com vulgueu. ===== */
+/* UWCL Stars: nit d'estadi europeu, focus i estrelles, cromos com a objectes de plata.
+   Tot el color del joc surt d'aquests tokens: aquí és on cal començar per canviar l'estil. */
+:root {
+  --nit: #070b2e;
+  --nit-2: #10175a;
+  --blau: #1f35c9;
+  --violeta: #6a2be0;
+  --magenta: #ff2d8f;
+  --plata-clara: #eef1fb;
+  --blanc: #ffffff;
+  --tinta: #0a0f38;
+  --bronze: #d07a2c;
+  --plata: #a9bdd6;
+  --or: #ffc400;
+  --holo: conic-gradient(from 210deg, #ff2d8f, #ffc400, #35f2c0, #3aa8ff, #a855ff, #ff2d8f);
+  --display: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+  --text: "Atkinson Hyperlegible", "Trebuchet MS", Verdana, sans-serif;
+  --estrelles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cg fill='%23ffffff'%3E%3Cpath opacity='.28' d='M30 22l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3Cpath opacity='.14' d='M150 40l1.5 4.500 4.500 1.500-4.500 1.500-1.500 4.500-1.500-4.500-4.500-1.500 4.500-1.500z'/%3E%3Cpath opacity='.22' d='M95 110l1.500 4.500 4.500 1.500-4.500 1.500-1.500 4.500-1.500-4.500-4.500-1.500 4.500-1.500z'/%3E%3Cpath opacity='.16' d='M195 150l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3Cpath opacity='.12' d='M45 185l1.500 4.500 4.500 1.500-4.500 1.500-1.500 4.500-1.500-4.500-4.500-1.500 4.500-1.500z'/%3E%3C/g%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background-color: var(--nit);
+  background-image:
+    radial-gradient(ellipse 70% 420px at 18% -60px, rgba(106, 43, 224, .75), transparent),
+    radial-gradient(ellipse 70% 420px at 85% -60px, rgba(31, 53, 201, .85), transparent),
+    var(--estrelles);
+  background-repeat: no-repeat, no-repeat, repeat;
+  color: var(--plata-clara);
+  font: 400 17px/1.45 var(--text);
+}
+button, input { font: inherit; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1; text-wrap: balance; }
+:focus-visible { outline: 3px solid var(--magenta); outline-offset: 2px; }
+
+.boto {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff, #c9d3ec);
+  color: var(--tinta);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(160, 180, 255, .45);
+}
+.boto:hover { background: #fff; box-shadow: 0 0 30px rgba(200, 215, 255, .8); }
+.boto:active { transform: translateY(2px); }
+.boto.segon { background: linear-gradient(180deg, var(--magenta), #c4116a); color: #fff; box-shadow: 0 0 22px rgba(255, 45, 143, .5); }
+.boto.segon:hover { background: #ff4fa2; }
+.boto:disabled { background: #39406f; color: #aab; box-shadow: none; cursor: default; transform: none; }
+.boto-discret {
+  appearance: none;
+  background: none;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  color: var(--plata-clara);
+  padding: 7px 14px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.boto-discret:hover { background: rgba(255, 255, 255, .12); }
+.boto-discret.perill { color: #ffa9cf; }
+
+/* ---- Capçalera ---- */
+.cap {
+  background: rgba(7, 11, 46, .72);
+  border-bottom: 1px solid rgba(238, 241, 251, .35);
+  padding: 10px max(16px, calc((100% - 1120px) / 2));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+.marca { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1; white-space: nowrap; color: var(--blanc); }
+.marca i { font-style: normal; color: var(--magenta); }
+.qui { font: 800 20px/1 var(--display); color: var(--plata-clara); padding: 4px 12px; border-radius: 999px; background: rgba(255, 45, 143, .25); white-space: nowrap; }
+.comptadors { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 15px; font-variant-numeric: tabular-nums; }
+.comptadors b { font-family: var(--display); font-size: 23px; font-weight: 800; color: var(--blanc); margin-right: 3px; }
+.pestanyes { display: flex; gap: 4px; margin-left: auto; }
+.pestanya {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--plata-clara);
+  padding: 8px 14px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 999px;
+}
+.pestanya:hover { background: rgba(255, 255, 255, .12); }
+.pestanya[aria-current="page"] { background: var(--blanc); color: var(--tinta); }
+
+.pagina { max-width: 1120px; margin: 0 auto; padding: 24px 16px 56px; }
+
+/* ---- Entrada ---- */
+.entrada { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-top: 28px; }
+.entrada h1 { font-size: clamp(72px, 12vw, 138px); font-weight: 900; line-height: .84; color: var(--blanc); text-shadow: 0 0 44px rgba(150, 120, 255, .8); }
+.entrada .sub { margin-top: 16px; font-size: 19px; max-width: 34em; }
+.formulari { display: grid; gap: 16px; margin-top: 24px; max-width: 460px; }
+.camp { display: grid; gap: 5px; }
+.camp label { font-weight: 700; }
+.camp input {
+  background: var(--plata-clara);
+  color: var(--tinta);
+  border: 0;
+  border-radius: 6px;
+  padding: 12px;
+  width: 100%;
+}
+.ajuda { font-size: 14px; opacity: .85; }
+.error { color: var(--blanc); background: #b70e5f; padding: 7px 11px; border-radius: 6px; font-weight: 700; }
+.mostra { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end; }
+.mostra .cromo:nth-child(1) { transform: rotate(-4deg) translateY(10px); }
+.mostra .cromo:nth-child(3) { transform: rotate(4deg) translateY(10px); }
+
+/* ---- Cromo ---- */
+.cromo {
+  --c1: #333; --c2: #666; --ct: #fff; --marc: var(--bronze);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 5 / 7.4;
+  min-width: 0;
+  background: var(--plata-clara);
+  color: var(--tinta);
+  border: 7px solid var(--marc);
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--marc) 55%, transparent);
+  container-type: inline-size;
+}
+.cromo.plata { --marc: var(--plata); }
+.cromo.or { --marc: var(--or); }
+.cromo.llegenda {
+  --marc: #ff7ac0;
+  border-color: transparent;
+  background: linear-gradient(var(--plata-clara), var(--plata-clara)) padding-box, var(--holo) border-box;
+}
+.cromo-franja {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px;
+  background: var(--c1);
+  color: var(--ct);
+  padding: 3cqw 5cqw;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 10.5cqw;
+  line-height: 1.05;
+}
+.cromo-imatge {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--c1) 0 50%, var(--c2) 50% 100%);
+}
+.cromo-valor {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 50cqw;
+  line-height: 1;
+  color: var(--blanc);
+  -webkit-text-stroke: 3cqw var(--tinta);
+  paint-order: stroke fill;
+}
+.cromo-posicio {
+  position: absolute;
+  left: 4cqw;
+  bottom: 3cqw;
+  background: var(--tinta);
+  color: var(--blanc);
+  padding: 1cqw 3.5cqw;
+  border-radius: 2px;
+  font-size: 8.5cqw;
+  font-weight: 700;
+}
+.cromo-peu { padding: 3.5cqw 5cqw 4cqw; display: grid; gap: 1.5cqw; }
+.cromo-nom { display: block; font-family: var(--display); font-weight: 800; font-size: 13.5cqw; line-height: 1; min-height: 2em; text-wrap: balance; }
+.cromo-copies { display: block; font-size: 8.4cqw; line-height: 1.15; font-weight: 700; font-variant-numeric: tabular-nums; min-height: 2.3em; }
+.cromo-marca {
+  position: absolute;
+  top: 19cqw;
+  right: 3cqw;
+  z-index: 1;
+  padding: 1.5cqw 3.5cqw;
+  border-radius: 2px;
+  font-family: var(--display);
+  font-size: 10.5cqw;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--magenta);
+  color: var(--blanc);
+}
+
+/* ---- Sobres ---- */
+.taula { display: grid; gap: 24px; justify-items: center; }
+.sobre-gran {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  width: min(260px, 66vw);
+  color: inherit;
+  filter: drop-shadow(0 0 30px rgba(130, 110, 255, .7));
+}
+.paquet {
+  position: relative;
+  aspect-ratio: 5 / 7;
+  overflow: hidden;
+  background:
+    linear-gradient(115deg, transparent 28%, rgba(255, 255, 255, .6) 44%, transparent 58%),
+    var(--estrelles),
+    linear-gradient(160deg, var(--violeta), var(--blau) 55%, var(--nit-2));
+  color: var(--blanc);
+  clip-path: polygon(0 3%, 5% 0, 10% 3%, 15% 0, 20% 3%, 25% 0, 30% 3%, 35% 0, 40% 3%, 45% 0, 50% 3%, 55% 0, 60% 3%, 65% 0, 70% 3%, 75% 0, 80% 3%, 85% 0, 90% 3%, 95% 0, 100% 3%, 100% 97%, 95% 100%, 90% 97%, 85% 100%, 80% 97%, 75% 100%, 70% 97%, 65% 100%, 60% 97%, 55% 100%, 50% 97%, 45% 100%, 40% 97%, 35% 100%, 30% 97%, 25% 100%, 20% 97%, 15% 100%, 10% 97%, 5% 100%, 0 97%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  padding: 20px;
+  font-family: var(--display);
+}
+.paquet .t1 { font-weight: 900; font-size: 72px; line-height: .86; }
+.paquet .t2 { font-weight: 800; font-size: 25px; }
+.paquet .t3 { font: 700 15px/1.2 var(--text); }
+.sobre-gran:hover .paquet { transform: rotate(-1.5deg) scale(1.02); }
+.paquet.obrint { animation: esquinça .42s ease-in forwards; }
+@keyframes esquinça {
+  40% { transform: rotate(3deg) scale(1.05); }
+  100% { transform: translateY(-40px) rotate(-5deg) scale(1.1); opacity: 0; }
+}
+.accions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; }
+
+.fila-cromos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; width: 100%; }
+.volta { perspective: 900px; min-width: 0; }
+.volta-interior { position: relative; transition: transform .4s cubic-bezier(.3, 1.3, .5, 1); transform-style: preserve-3d; }
+.volta-interior.girada { transform: rotateY(180deg); }
+.cara, .dors { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.cara { transform: rotateY(180deg); }
+.dors {
+  position: absolute;
+  inset: 0;
+  border-radius: 9px;
+  background: var(--estrelles), linear-gradient(160deg, var(--violeta), var(--blau));
+  border: 7px solid var(--plata-clara);
+}
+.frase { font-size: 19px; text-align: center; min-height: 1.5em; }
+
+.final {
+  background: var(--plata-clara);
+  color: var(--tinta);
+  border-left: 10px solid var(--magenta);
+  border-radius: 6px;
+  padding: 20px 22px;
+  width: 100%;
+  max-width: 720px;
+  display: grid;
+  gap: 12px;
+}
+.final h2 { font-size: 38px; }
+.final .boto-discret { color: var(--tinta); justify-self: start; }
+.xifres { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+.xifres div { display: grid; }
+.xifres b { font: 900 42px/1 var(--display); font-variant-numeric: tabular-nums; }
+.xifres span { font-size: 15px; }
+.codi-resultat { width: 100%; font: 14px/1.3 ui-monospace, Menlo, Consolas, monospace; background: #fff; color: var(--tinta); border: 1px solid #99a; border-radius: 4px; padding: 8px; }
+
+/* ---- Els meus sobres ---- */
+.titol-seccio { font-size: clamp(42px, 7vw, 64px); font-weight: 900; color: var(--blanc); }
+.club { margin-top: 28px; }
+.club-cap { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; border-bottom: 1px solid rgba(238, 241, 251, .5); padding-bottom: 5px; margin-bottom: 12px; }
+.club-cap h2 { font-size: 34px; color: var(--blanc); }
+.reixa { display: grid; grid-template-columns: repeat(auto-fill, minmax(142px, 1fr)); gap: 12px; }
+.buit {
+  aspect-ratio: 5 / 7.4;
+  border: 2px dashed rgba(238, 241, 251, .4);
+  border-radius: 9px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  overflow: hidden;
+  background: rgba(16, 23, 90, .5);
+}
+.buit .num { font: 800 30px/1 var(--display); opacity: .75; font-variant-numeric: tabular-nums; }
+.buit .nom, .buit .pos { display: block; }
+.buit .nom { font: 800 19px/1.05 var(--display); opacity: .85; }
+.buit .pos { font-size: 13px; }
+
+/* ---- Fitxa d'onze i banqueta ---- */
+.fitxa {
+  --c1: #333; --c2: #666; --ct: #fff; --marc: var(--bronze);
+  appearance: none;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  background: var(--plata-clara);
+  color: var(--tinta);
+  border: 5px solid var(--marc);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--marc) 65%, transparent);
+}
+.fitxa.plata { --marc: var(--plata); }
+.fitxa.or { --marc: var(--or); }
+.fitxa.llegenda {
+  --marc: #ff7ac0;
+  border-color: transparent;
+  background: linear-gradient(var(--plata-clara), var(--plata-clara)) padding-box, var(--holo) border-box;
+}
+.fitxa-club {
+  background: linear-gradient(100deg, var(--c1) 0 62%, var(--c2) 62% 100%);
+  color: var(--ct);
+  font: 800 14px/1.25 var(--display);
+  padding: 2px 4px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.fitxa-cos { display: grid; align-content: center; justify-items: center; gap: 1px; padding: 3px 3px 5px; }
+.fitxa .v { font: 900 27px/1 var(--display); font-variant-numeric: tabular-nums; }
+.fitxa .n { font: 800 15px/1 var(--display); overflow-wrap: anywhere; }
+.fitxa .x { font-size: 12.5px; line-height: 1.1; }
+.fitxa:hover { filter: brightness(1.08); }
+.fitxa[aria-pressed="true"] { outline: 4px solid var(--magenta); outline-offset: 2px; }
+.fitxa.apagada { opacity: .32; }
+
+.onze-disposicio { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; margin-top: 16px; align-items: start; }
+.columna-camp { position: sticky; top: 10px; display: grid; gap: 12px; }
+.camp-futbol {
+  --linia: rgba(238, 241, 251, .7);
+  border: 2px solid var(--plata-clara);
+  border-radius: 4px;
+  padding: 16px 8px;
+  display: grid;
+  gap: 12px;
+  background-color: var(--nit-2);
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 14%, var(--linia) 14.3%, var(--linia) 14.7%, transparent 15%),
+    linear-gradient(transparent calc(50% - 1px), var(--linia) calc(50% - 1px), var(--linia) calc(50% + 1px), transparent calc(50% + 1px)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, .035) 0 40px, transparent 40px 80px);
+}
+.linia { display: flex; justify-content: space-evenly; gap: 6px; }
+.lloc { flex: 0 1 112px; min-width: 0; min-height: 86px; }
+.lloc-buit {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  background: rgba(238, 241, 251, .08);
+  color: var(--plata-clara);
+  border: 2px dashed var(--plata-clara);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px;
+}
+.lloc-buit[aria-pressed="true"] { outline: 4px solid var(--magenta); outline-offset: 2px; }
+.lloc-buit.apagada { opacity: .32; }
+.valor-equip { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.valor-equip b { font: 900 68px/1 var(--display); color: var(--blanc); font-variant-numeric: tabular-nums; }
+.panell { display: grid; gap: 14px; }
+.panell h2 { font-size: 34px; color: var(--blanc); }
+.grup-banqueta { display: grid; gap: 7px; }
+.grup-banqueta h3 { font-size: 22px; }
+.banqueta { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 9px; }
+.llegenda-colors { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 14px; }
+.llegenda-colors span { display: inline-flex; align-items: center; gap: 5px; }
+.llegenda-colors i { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+
+.peu { width: 100%; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: 40px; padding-top: 14px; border-top: 1px solid rgba(238, 241, 251, .35); }
+.peu p { flex: 1 1 320px; font-size: 14px; max-width: 70ch; }
+
+/* ---- Peces noves ---- */
+button.cromo { appearance: none; font: inherit; text-align: left; padding: 0; cursor: pointer; width: 100%; }
+button.cromo:hover { transform: translateY(-3px); }
+.sincro { font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(238, 241, 251, .4); align-self: center; }
+.sincro.pendent, .sincro.error { background: #b70e5f; border-color: #b70e5f; color: #fff; }
+.sincro.desant { opacity: .75; }
+.ajuda-sobre { font-size: 15px; opacity: .85; text-align: center; }
+
+.avisos { position: fixed; z-index: 30; right: 16px; bottom: 16px; display: grid; gap: 8px; max-width: min(360px, calc(100% - 32px)); }
+.avis-flotant {
+  background: var(--plata-clara);
+  color: var(--tinta);
+  border-left: 8px solid var(--blau);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-weight: 700;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, .45);
+  animation: entra-avis .3s ease-out;
+}
+.avis-flotant.es-fita { border-left-color: var(--or); }
+.avis-flotant.marxa { opacity: 0; transform: translateY(8px); transition: opacity .5s, transform .5s; }
+@keyframes entra-avis { from { opacity: 0; transform: translateY(12px); } }
+
+.esclat { position: fixed; inset: 0; z-index: 20; pointer-events: none; display: grid; place-items: center; opacity: 0; }
+.esclat span { font: 900 clamp(64px, 14vw, 170px)/1 var(--display); color: #fff; text-shadow: 0 0 40px rgba(255, 255, 255, .9); transform: scale(.6); }
+.esclat.llegenda { background: radial-gradient(circle, rgba(255, 122, 192, .55), rgba(168, 85, 255, .35) 40%, transparent 70%); }
+.esclat.or { background: radial-gradient(circle, rgba(255, 196, 0, .35), transparent 60%); }
+.esclat.or span { display: none; }
+.esclat.actiu { animation: esclat 1.5s ease-out; }
+.esclat.actiu span { animation: esclat-text 1.5s ease-out; }
+@keyframes esclat { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes esclat-text { 0% { transform: scale(.6); } 25% { transform: scale(1.05); } 100% { transform: scale(1.15); } }
+.volta-interior.brilla .cromo { animation: brilla 1.6s ease-out; }
+@keyframes brilla { 0% { box-shadow: 0 0 0 color-mix(in srgb, var(--marc) 90%, transparent); } 30% { box-shadow: 0 0 46px 10px color-mix(in srgb, var(--marc) 90%, transparent); } 100% { box-shadow: 0 0 14px color-mix(in srgb, var(--marc) 55%, transparent); } }
+
+.resum-album { margin-top: 6px; }
+.rareses { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.raresa-xip { border: 3px solid var(--bronze); border-radius: 999px; padding: 4px 12px; font-size: 15px; background: rgba(7, 11, 46, .6); }
+.raresa-xip b { font-family: var(--display); font-size: 20px; color: var(--blanc); }
+.raresa-xip.plata { border-color: var(--plata); }
+.raresa-xip.or { border-color: var(--or); }
+.raresa-xip.llegenda { border-color: #ff7ac0; }
+.filtres { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; padding: 12px; background: rgba(16, 23, 90, .6); border-radius: 8px; }
+.camp-petit { display: grid; gap: 3px; flex: 1 1 160px; }
+.camp-petit label { font-size: 14px; font-weight: 700; }
+.camp-petit select { background: var(--plata-clara); color: var(--tinta); border: 0; border-radius: 6px; padding: 9px 10px; font: inherit; }
+.club-cap { --c1: var(--plata-clara); }
+.club-cap h2 { border-left: 8px solid var(--c1); padding-left: 10px; }
+.progres { flex: 1 1 120px; max-width: 260px; height: 10px; border-radius: 999px; background: rgba(238, 241, 251, .18); overflow: hidden; align-self: center; }
+.progres span { display: block; height: 100%; background: var(--c1); border-right: 3px solid var(--c2); min-width: 0; }
+.club .club-cap { border-bottom-color: rgba(238, 241, 251, .3); }
+.buit-filtre { margin-top: 24px; }
+
+.velo { position: fixed; inset: 0; z-index: 10; background: rgba(4, 6, 26, .78); }
+.detall {
+  position: fixed;
+  z-index: 11;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(720px, calc(100% - 24px));
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
+  background: var(--nit-2);
+  border: 1px solid rgba(238, 241, 251, .4);
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+.detall h2 { font-size: 40px; color: var(--blanc); }
+.detall dl { display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; margin: 12px 0 18px; }
+.detall dt { font-weight: 700; opacity: .8; }
+.detall dd { margin: 0; }
+
+.formacions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+.xip-formacio {
+  appearance: none;
+  border: 1.5px solid var(--plata-clara);
+  background: none;
+  color: var(--plata-clara);
+  border-radius: 999px;
+  padding: 7px 15px;
+  font: 800 19px/1 var(--display);
+  cursor: pointer;
+}
+.xip-formacio[aria-pressed="true"] { background: var(--blanc); color: var(--tinta); }
+.punt { width: 13px; height: 13px; border-radius: 50%; display: inline-block; background: var(--bronze); }
+.punt.plata { background: var(--plata); }
+.punt.or { background: var(--or); }
+.punt.llegenda { background: var(--holo); }
+.lloc-buit { width: 100%; height: 100%; }
+
+.fites { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 16px; }
+.fita { display: grid; grid-template-columns: 44px 1fr; gap: 4px 12px; align-items: center; padding: 12px 14px; border-radius: 8px; background: rgba(16, 23, 90, .55); border: 1px solid rgba(238, 241, 251, .2); }
+.fita b { display: block; font: 800 22px/1.05 var(--display); color: var(--blanc); }
+.fita > span:nth-child(2) > span { display: block; font-size: 15px; line-height: 1.3; margin-top: 2px; }
+.medalla { width: 40px; height: 40px; border-radius: 50%; border: 3px dashed rgba(238, 241, 251, .4); grid-row: span 2; }
+.fita.feta { border-color: var(--or); background: rgba(16, 23, 90, .85); }
+.fita.feta .medalla { border: 0; background: radial-gradient(circle at 35% 30%, #fff6c4, var(--or) 45%, #b07d00); box-shadow: 0 0 14px rgba(255, 196, 0, .6); }
+.estat-fita { grid-column: 2; font-size: 13px; opacity: .8; }
+.fita.feta .estat-fita { color: var(--or); opacity: 1; font-weight: 700; }
+
+.taula-classe { overflow-x: auto; margin-top: 16px; }
+.taula-classe table { border-collapse: collapse; width: 100%; min-width: 520px; font-variant-numeric: tabular-nums; }
+.taula-classe th, .taula-classe td { padding: 9px 10px; border-bottom: 1px solid rgba(238, 241, 251, .2); text-align: left; }
+.taula-classe th { font-size: 14px; }
+.taula-classe .n { text-align: right; }
+.taula-classe tr.jo td { background: rgba(255, 45, 143, .22); font-weight: 700; }
+
+/* ---- Laboratori ---- */
+.lab .titol-seccio::after { content: ""; }
+.lab-intro, .lab-text p { max-width: 70ch; margin-top: 14px; }
+.lab-text h2 { font-size: 32px; color: var(--blanc); margin-top: 28px; }
+.lab-nota { font-size: 15px; opacity: .9; margin-top: 12px; max-width: 75ch; }
+.formula { font-variant-numeric: tabular-nums; background: rgba(16, 23, 90, .7); border-left: 5px solid var(--magenta); padding: 10px 14px; border-radius: 4px; max-width: 75ch; }
+.lab-xifres { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 20px; }
+.lab-xifres div { display: grid; align-content: start; background: rgba(16, 23, 90, .6); border-radius: 8px; padding: 12px 14px; }
+.lab-xifres b { font: 900 40px/1 var(--display); color: var(--blanc); font-variant-numeric: tabular-nums; }
+.lab-xifres span { font-size: 14px; margin-top: 4px; }
+.lab-xifres.petites b { font-size: 30px; }
+.taula-lab { border-collapse: collapse; margin-top: 18px; min-width: min(100%, 460px); font-variant-numeric: tabular-nums; }
+.lab-text .taula-lab, .lab .taula-lab { display: block; overflow-x: auto; max-width: 100%; }
+.taula-lab th, .taula-lab td { padding: 8px 12px; border-bottom: 1px solid rgba(238, 241, 251, .2); text-align: left; white-space: nowrap; }
+.taula-lab th { font-size: 14px; }
+.taula-lab tfoot td { font-weight: 700; border-bottom: 0; }
+.taula-lab .n { text-align: right; }
+.taula-lab .punt { vertical-align: -1px; }
+.lab-controls { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-top: 18px; padding: 14px; background: rgba(16, 23, 90, .6); border-radius: 8px; }
+.lab-controls input, .camp-petit input[type="number"] { background: var(--plata-clara); color: var(--tinta); border: 0; border-radius: 6px; padding: 9px 10px; font: inherit; width: 100%; }
+.camp-petit input[type="range"] { width: 100%; accent-color: var(--magenta); }
+.lab-resultat { margin-top: 20px; }
+.lab-dos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 12px; }
+.lab-dos h3 { font-size: 26px; color: var(--blanc); }
+.histo { margin: 14px 0 0; }
+.histo svg { width: 100%; height: auto; display: block; }
+.histo text { fill: var(--plata-clara); font: 13px var(--text); }
+.histo .et-med { font-weight: 700; }
+.histo .eix { stroke: rgba(238, 241, 251, .45); stroke-width: 1; }
+.histo .barra path { fill: var(--plata); }
+.histo .barra .zona { fill: transparent; }
+.histo .barra:hover path { fill: var(--blanc); }
+.histo .mediana { stroke: var(--magenta); stroke-width: 2; stroke-dasharray: 4 3; }
+.histo figcaption { font-size: 14px; opacity: .85; margin-top: 4px; }
+
+@media (max-width: 820px) {
+  .detall { grid-template-columns: minmax(0, 1fr); }
+  .detall-cromo { max-width: 200px; }
+  .sincro { font-size: 12px; }
+  .entrada { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .onze-disposicio { grid-template-columns: minmax(0, 1fr); }
+  .columna-camp { position: static; }
+  .pestanyes { margin-left: 0; width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .pestanya { flex: 1 0 auto; padding: 9px 10px; font-size: 19px; white-space: nowrap; }
+  .fila-cromos { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .volta { grid-column: span 2; }
+  .fila-cromos:not(.multi) .volta:nth-child(4) { grid-column: 2 / span 2; }
+  .marca { font-size: 26px; }
+  .camp-futbol { padding: 10px 4px; gap: 9px; }
+}
+@media (max-width: 420px) {
+  .fitxa .n { font-size: 13.5px; }
+  .fitxa .v { font-size: 23px; }
+  .fitxa-club { font-size: 12.5px; }
+  .fitxa { border-width: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .volta-interior, .paquet, .sobre-gran:hover .paquet { transition: none; animation: none !important; transform: none; }
+  .volta-interior.girada { transform: rotateY(180deg); }
+}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript><p>Aquest joc necessita JavaScript per funcionar.</p></noscript>
+<script>
+/* ========================================================================
+   AVÍS D'ERRORS
+   Si la base de dades té un error, el joc ho diu a la pantalla.
+   ======================================================================== */
+window.addEventListener("error", function (e) {
+  var el = document.getElementById("error-joc");
+  if (el) return; // es mostra només el primer error, que és el que explica el problema
+  if (!el) { el = document.createElement("pre"); el.id = "error-joc"; el.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:99;background:#fff3f3;color:#7a0000;border:2px solid #c00;padding:12px;font:14px/1.4 monospace;white-space:pre-wrap"; document.body.appendChild(el); }
+  el.textContent = "El joc no pot arrencar. " + e.message;
+});
+</script>
+<script>
+/* ========================================================================
+   MOTOR: NO ES TOCA
+   Aquí es decideix l'atzar: cada carta surt en proporció a les seves butlletes.
+   ======================================================================== */
+/* ===========================================================================
+   MOTOR DE SOBRES
+   Tot l'atzar del joc passa per aquest fitxer. No toca la pantalla.
+
+   Regla central: una carta amb el doble de butlletes surt el doble de sovint.
+   P(carta) = butlletes de la carta / total de butlletes
+
+   Si demanes a una IA que canviï l'estil del joc, digue-li que NO toqui aquest
+   fitxer. Les regles es canvien a la configuració (dades.js).
+   =========================================================================== */
+(function (arrel, fabrica) {
+  if (typeof module === "object" && module.exports) module.exports = fabrica();
+  else arrel.Motor = fabrica();
+})(typeof self !== "undefined" ? self : this, function () {
+  "use strict";
+
+  /* ---- Atzar ---------------------------------------------------------- */
+
+  // Generador amb llavor: la mateixa llavor repeteix la mateixa seqüència.
+  function creaAtzar(llavor) {
+    var s = llavor === undefined ? llavorNova() : llavor >>> 0;
+    return function () {
+      s = (s + 0x6d2b79f5) >>> 0;
+      var t = s;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function llavorNova() {
+    var c = typeof globalThis !== "undefined" ? globalThis.crypto : null;
+    if (c && c.getRandomValues) return c.getRandomValues(new Uint32Array(1))[0];
+    return (Math.random() * 4294967296) >>> 0;
+  }
+
+  /* ---- Bossa de butlletes ------------------------------------------------- */
+
+  function butlletesDe(carta, config) {
+    if (Number.isFinite(carta.butlletes)) return carta.butlletes;
+    return config.butlletesPerRaresa[carta.raresa];
+  }
+
+  // Comprova les dades i prepara la bossa de la qual es treuen les cartes.
+  function creaBossa(cartes, config) {
+    if (!cartes.length) throw new Error("No hi ha cap carta a la base de dades.");
+    var vistos = {};
+    var acumulat = [];
+    var total = 0;
+    var perRaresa = {};
+    cartes.forEach(function (carta, i) {
+      if (vistos[carta.id]) throw new Error("Identificador repetit: " + carta.id);
+      vistos[carta.id] = true;
+      var c = butlletesDe(carta, config);
+      if (!Number.isInteger(c) || c < 1)
+        throw new Error("La carta " + carta.nom + " ha de tenir com a mínim 1 butlleta.");
+      total += c;
+      acumulat.push(total);
+      if (!perRaresa[carta.raresa]) perRaresa[carta.raresa] = { indexs: [], acumulat: [], total: 0 };
+      var r = perRaresa[carta.raresa];
+      r.total += c;
+      r.indexs.push(i);
+      r.acumulat.push(r.total);
+    });
+    return { cartes: cartes, acumulat: acumulat, total: total, perRaresa: perRaresa };
+  }
+
+  function cerca(acumulat, x) {
+    var a = 0;
+    var b = acumulat.length - 1;
+    while (a < b) {
+      var m = (a + b) >> 1;
+      if (x < acumulat[m]) b = m;
+      else a = m + 1;
+    }
+    return a;
+  }
+
+  // Treu una butlleta. La butlleta torna a la bossa: cada sorteig és independent.
+  function sorteja(bossa, atzar) {
+    return cerca(bossa.acumulat, atzar() * bossa.total);
+  }
+
+  function sortejaRaresa(bossa, raresa, atzar) {
+    var r = bossa.perRaresa[raresa];
+    if (!r) throw new Error("No hi ha cartes de raresa " + raresa + ".");
+    return r.indexs[cerca(r.acumulat, atzar() * r.total)];
+  }
+
+  // Probabilitats teòriques: el que el joc diu que passa.
+  function probabilitats(bossa, config) {
+    var mida = config.cartesPerSobre;
+    var res = {};
+    Object.keys(bossa.perRaresa).forEach(function (raresa) {
+      var r = bossa.perRaresa[raresa];
+      var p = r.total / bossa.total;
+      res[raresa] = {
+        cartes: r.indexs.length,
+        butlletes: r.total,
+        perCarta: p,
+        perSobre: 1 - Math.pow(1 - p, mida),
+      };
+    });
+    return res;
+  }
+
+  /* ---- Partida d'un jugador -------------------------------------------- */
+
+  function estatInicial(config) {
+    return {
+      gemmes: config.gemmesInicials,
+      sobres: 0,
+      coleccio: {},        // id de carta -> quantes en tens
+      repetides: 0,        // repetides disponibles per canviar
+      senseGarantia: 0,    // sobres seguits sense la raresa garantida
+      historial: [],       // llista de sobres oberts
+    };
+  }
+
+  // Obre un sobre. Retorna les cartes o null si no queden gemmes.
+  function obreSobre(estat, bossa, config, atzar) {
+    if (estat.gemmes < config.preuSobre) return null;
+    estat.gemmes -= config.preuSobre;
+    estat.sobres += 1;
+
+    var g = config.garantia;
+    var indexs = [];
+    var teGarantida = false;
+    for (var j = 0; j < config.cartesPerSobre; j++) {
+      var darrera = j === config.cartesPerSobre - 1;
+      var forca = g && g.cadaSobres > 0 && darrera && !teGarantida && estat.senseGarantia + 1 >= g.cadaSobres;
+      var i = forca ? sortejaRaresa(bossa, g.raresa, atzar) : sorteja(bossa, atzar);
+      if (g && bossa.cartes[i].raresa === g.raresa) teGarantida = true;
+      indexs.push(i);
+    }
+    estat.senseGarantia = teGarantida ? 0 : estat.senseGarantia + 1;
+
+    var resultat = indexs.map(function (i) {
+      var carta = bossa.cartes[i];
+      var abans = estat.coleccio[carta.id] || 0;
+      estat.coleccio[carta.id] = abans + 1;
+      if (abans > 0) estat.repetides += 1;
+      return { carta: carta, nova: abans === 0, tens: abans + 1 };
+    });
+    estat.historial.push(resultat.map(function (r) { return r.carta.id; }));
+    return resultat;
+  }
+
+  // Canvia repetides per una carta concreta que falta.
+  function canviaRepetides(estat, idCarta, config) {
+    var cost = config.repetidesPerCanvi;
+    if (!cost || estat.repetides < cost || estat.coleccio[idCarta]) return false;
+    estat.repetides -= cost;
+    estat.coleccio[idCarta] = 1;
+    return true;
+  }
+
+  /* ---- Simulació de molts jugadors ------------------------------------- */
+
+  // Quants sobres necessita un jugador per acabar l'àlbum i per a la primera
+  // carta de la raresa indicada. L'estratègia de canvi demana sempre la carta
+  // més rara que falta.
+  function unJugador(bossa, config, atzar, raresaObjectiu, topall) {
+    var n = bossa.cartes.length;
+    var te = new Uint8Array(n);
+    var falten = n;
+    var sobres = 0;
+    var repetides = 0;
+    var sense = 0;
+    var primera = null;
+    var g = config.garantia;
+    var cost = config.repetidesPerCanvi || 0;
+    var mida = config.cartesPerSobre;
+    var ordre = bossa.ordreRaresa;
+    var cursor = 0;
+
+    while (falten > 0 && sobres < topall) {
+      sobres += 1;
+      var ambGarantida = false;
+      for (var j = 0; j < mida; j++) {
+        var forca = g && g.cadaSobres > 0 && j === mida - 1 && !ambGarantida && sense + 1 >= g.cadaSobres;
+        var i = forca ? sortejaRaresa(bossa, g.raresa, atzar) : sorteja(bossa, atzar);
+        var raresa = bossa.cartes[i].raresa;
+        if (g && raresa === g.raresa) ambGarantida = true;
+        if (raresa === raresaObjectiu && primera === null) primera = sobres;
+        if (te[i]) repetides += 1;
+        else { te[i] = 1; falten -= 1; }
+      }
+      sense = ambGarantida ? 0 : sense + 1;
+      if (cost) {
+        while (repetides >= cost && falten > 0) {
+          while (te[ordre[cursor]]) cursor += 1;
+          te[ordre[cursor]] = 1;
+          falten -= 1;
+          repetides -= cost;
+        }
+      }
+    }
+    return { album: falten === 0 ? sobres : null, primera: primera };
+  }
+
+  function resum(valors) {
+    if (!valors.length) return { n: 0, mitjana: null, mediana: null, p10: null, p90: null };
+    var v = valors.slice().sort(function (a, b) { return a - b; });
+    var q = function (p) { return v[Math.min(v.length - 1, Math.floor(p * v.length))]; };
+    var suma = v.reduce(function (s, x) { return s + x; }, 0);
+    return { n: v.length, mitjana: suma / v.length, mediana: q(0.5), p10: q(0.1), p90: q(0.9) };
+  }
+
+  function simula(bossa, config, opcions) {
+    var o = opcions || {};
+    var jugadors = o.jugadors || 1000;
+    var topall = o.topall || 100000;
+    var raresaObjectiu = o.raresaObjectiu || (config.garantia && config.garantia.raresa);
+    var atzar = creaAtzar(o.llavor);
+    bossa.ordreRaresa = bossa.cartes
+      .map(function (_, i) { return i; })
+      .sort(function (a, b) { return butlletesDe(bossa.cartes[a], config) - butlletesDe(bossa.cartes[b], config); });
+    var album = [];
+    var primera = [];
+    var sensePrimera = 0;
+    for (var k = 0; k < jugadors; k++) {
+      var r = unJugador(bossa, config, atzar, raresaObjectiu, topall);
+      if (r.album !== null) album.push(r.album);
+      if (r.primera !== null) primera.push(r.primera);
+      else sensePrimera += 1;
+    }
+    return {
+      jugadors: jugadors,
+      album: resum(album),
+      primera: resum(primera),
+      sensePrimera: sensePrimera,
+      valorsAlbum: album,
+      valorsPrimera: primera,
+    };
+  }
+
+  return {
+    creaAtzar: creaAtzar,
+    butlletesDe: butlletesDe,
+    creaBossa: creaBossa,
+    sorteja: sorteja,
+    probabilitats: probabilitats,
+    estatInicial: estatInicial,
+    obreSobre: obreSobre,
+    canviaRepetides: canviaRepetides,
+    simula: simula,
+    resum: resum,
+  };
+});
+</script>
+<script>
+/* ========================================================================
+   BASE DE DADES
+   Enganxeu aquí les taules del full de càlcul (es copien amb les columnes separades per tabuladors).
+   La primera fila de cada taula són les capçaleres. No esborreu les cometes inverses ` del principi i del final.
+   ======================================================================== */
+var TAULA_GRUPS = `codi	nom	nom curt	color 1	color 2	color text
+BAR	FC Barcelona	Barça	#a50044	#004d98	#ffffff
+OLL	OL Lyonnes	Lyon	#1c3f94	#e3101d	#ffffff
+CHE	Chelsea	Chelsea	#034694	#dba111	#ffffff
+ARS	Arsenal	Arsenal	#db0007	#ffffff	#ffffff
+MCI	Manchester City	Man City	#6cabdd	#1c2c5b	#0b1a3d
+BAY	Bayern München	Bayern	#dc052d	#0066b2	#ffffff
+RMA	Real Madrid	Madrid	#f2f2f2	#5b2a86	#2a1747
+PSG	Paris Saint-Germain	PSG	#004170	#da291c	#ffffff
+JUV	Juventus	Juventus	#1a1a1a	#f2f2f2	#ffffff
+ROM	Roma	Roma	#8e1f2f	#f0bc42	#ffffff
+PFC	Paris FC	Paris FC	#1d2f6f	#7fb3e3	#ffffff
+BEN	Benfica	Benfica	#e30613	#ffffff	#ffffff
+INT	Inter	Inter	#0068a8	#111111	#ffffff
+HAC	BK Häcken	Häcken	#ffd400	#111111	#111111
+HBK	HB Køge	Køge	#0b1f4d	#ffffff	#ffffff
+SER	Servette	Servette	#8b1a2b	#ffffff	#ffffff
+OHL	OH Leuven	Leuven	#e2001a	#ffffff	#ffffff
+AUS	Austria Wien	Austria	#5a2d81	#ffffff	#ffffff`;
+
+var TAULA_CARTES = `id	grup	categoria	número	nom	valor	raresa	butlletes
+BAR-1	BAR	POR	1	Gemma Font	74	bronze	20
+BAR-13	BAR	POR	13	Cata Coll	89	or	11
+BAR-25	BAR	POR	25	Tyler McCamey	72	bronze	20
+BAR-2	BAR	DEF	2	Irene Paredes	85	or	11
+BAR-3	BAR	DEF	3	Renee van Asten	77	plata	17
+BAR-5	BAR	DEF	5	Laia Aleixandri	84	or	11
+BAR-8	BAR	DEF	8	Marta Torrejón	79	plata	17
+BAR-24	BAR	DEF	24	Martina Fernández	82	plata	17
+BAR-26	BAR	DEF	26	Julia Torres	64	bronze	20
+BAR-12	BAR	MIG	12	Patri Guijarro	91	llegenda	4
+BAR-14	BAR	MIG	14	Aitana Bonmatí	95	llegenda	4
+BAR-16	BAR	MIG	16	Clara Serrajordi	79	plata	17
+BAR-19	BAR	MIG	19	Vicky López	86	or	11
+BAR-21	BAR	MIG	21	Carla Julià	71	bronze	20
+BAR-29	BAR	MIG	29	Carolina Ferrera	66	bronze	20
+BAR-6	BAR	DAV	6	Sydney Schertenleib	81	plata	17
+BAR-7	BAR	DAV	7	Kerolin	85	or	11
+BAR-9	BAR	DAV	9	Clàudia Pina	90	llegenda	4
+BAR-10	BAR	DAV	10	Caroline Graham Hansen	92	llegenda	4
+BAR-17	BAR	DAV	17	Ewa Pajor	91	llegenda	4
+BAR-18	BAR	DAV	18	Kika Nazareth	84	or	11
+BAR-22	BAR	DAV	22	Esmee Brugts	83	plata	17
+BAR-34	BAR	DAV	34	Liv Pennock	66	bronze	20
+BAR-36	BAR	DAV	36	Nikoline Nielsen	69	bronze	20
+BAR-45	BAR	DAV	45	Giulia Galli	67	bronze	20
+OLL-1	OLL	POR	1	Christiane Endler	88	or	11
+OLL-25	OLL	POR	25	Maria-Luisa Grohs	80	plata	17
+OLL-3	OLL	DEF	3	Wendie Renard	88	or	11
+OLL-4	OLL	DEF	4	Selma Bacha	88	or	11
+OLL-5	OLL	DEF	5	Elma Junttila Nelhage	77	plata	17
+OLL-12	OLL	DEF	12	Ashley Lawrence	82	plata	17
+OLL-33	OLL	DEF	33	Tarciane	81	plata	17
+OLL-6	OLL	MIG	6	Melchie Dumornay	92	llegenda	4
+OLL-8	OLL	MIG	8	Korbin Shrader	82	plata	17
+OLL-10	OLL	MIG	10	Ines Benyahia	79	plata	17
+OLL-13	OLL	MIG	13	Damaris Egurrola	82	plata	17
+OLL-15	OLL	MIG	15	Ingrid Engen	82	plata	17
+OLL-20	OLL	MIG	20	Lily Yohannes	83	plata	17
+OLL-23	OLL	MIG	23	Caroline Weir	84	or	11
+OLL-24	OLL	MIG	24	Julie Swierot	72	bronze	20
+OLL-74	OLL	MIG	74	Ainhoa Sagna	66	bronze	20
+OLL-7	OLL	DAV	7	Vicki Becho	84	plata	17
+OLL-9	OLL	DAV	9	Marie-Antoinette Katoto	89	or	11
+OLL-11	OLL	DAV	11	Tabitha Chawinga	86	or	11
+OLL-14	OLL	DAV	14	Ada Hegerberg	88	or	11
+OLL-19	OLL	DAV	19	Johanna Rytting Kaneryd	81	plata	17
+OLL-29	OLL	DAV	29	Jule Brand	85	or	11
+OLL-30	OLL	DAV	30	Giovanna Waksman	75	bronze	20
+OLL-31	OLL	DAV	31	Liana Joseph	73	bronze	20
+OLL-77	OLL	DAV	77	Salma Paralluelo	90	llegenda	4
+CHE-1	CHE	POR	1	Livia Peng	80	plata	17
+CHE-24	CHE	POR	24	Hannah Hampton	88	or	11
+CHE-38	CHE	POR	38	Rebecca Spencer	76	plata	17
+CHE-2	CHE	DEF	2	Ellie Carpenter	85	or	11
+CHE-4	CHE	DEF	4	Naomi Girma	88	or	11
+CHE-5	CHE	DEF	5	Veerle Buurman	80	plata	17
+CHE-14	CHE	DEF	14	Nathalie Björn	82	plata	17
+CHE-17	CHE	DEF	17	Nelly Las	77	plata	17
+CHE-22	CHE	DEF	22	Lucy Bronze	86	or	11
+CHE-26	CHE	DEF	26	Kadeisha Buchanan	82	plata	17
+CHE-42	CHE	DEF	42	Chloe Sarwie	70	bronze	20
+CHE-6	CHE	MIG	6	Sjoeke Nüsken	84	plata	17
+CHE-8	CHE	MIG	8	Erin Cuthbert	83	plata	17
+CHE-16	CHE	MIG	16	Giulia Dragoni	78	plata	17
+CHE-19	CHE	MIG	19	Wieke Kaptein	83	plata	17
+CHE-21	CHE	MIG	21	Keira Walsh	87	or	11
+CHE-23	CHE	MIG	23	Maika Hamano	80	plata	17
+CHE-29	CHE	MIG	29	Manaka Matsukubo	77	plata	17
+CHE-32	CHE	MIG	32	Alexia Potter	72	bronze	20
+CHE-7	CHE	DAV	7	Mayra Ramírez	86	or	11
+CHE-9	CHE	DAV	9	Melvine Malard	82	plata	17
+CHE-10	CHE	DAV	10	Lauren James	90	llegenda	4
+CHE-11	CHE	DAV	11	Sandy Baltimore	82	plata	17
+CHE-12	CHE	DAV	12	Alyssa Thompson	84	plata	17
+CHE-15	CHE	DAV	15	Katie McCabe	84	plata	17
+CHE-33	CHE	DAV	33	Aggie Beever-Jones	80	plata	17
+ARS-16	ARS	POR	16	Misa Rodríguez	81	plata	17
+ARS-28	ARS	POR	28	Anneke Borbe	75	bronze	20
+ARS-40	ARS	POR	40	Isabella Damm	58	bronze	20
+ARS-2	ARS	DEF	2	Emily Fox	87	or	11
+ARS-3	ARS	DEF	3	Lotte Wubben-Moy	80	plata	17
+ARS-5	ARS	DEF	5	Elisa De Almeida	79	plata	17
+ARS-6	ARS	DEF	6	Leah Williamson	88	or	11
+ARS-7	ARS	DEF	7	Steph Catley	80	plata	17
+ARS-22	ARS	DEF	22	Ona Batlle	89	or	11
+ARS-26	ARS	DEF	26	Katie Reid	70	bronze	20
+ARS-31	ARS	DEF	31	Smilla Holmberg	74	bronze	20
+ARS-4	ARS	MIG	4	Georgia Stanway	87	or	11
+ARS-8	ARS	MIG	8	Mariona Caldentey	89	or	11
+ARS-10	ARS	MIG	10	Kim Little	82	plata	17
+ARS-12	ARS	MIG	12	Frida Maanum	84	plata	17
+ARS-24	ARS	MIG	24	Taylor Hinds	76	plata	17
+ARS-32	ARS	MIG	32	Kyra Cooney-Cross	83	plata	17
+ARS-9	ARS	DAV	9	Caitlin Foord	82	plata	17
+ARS-11	ARS	DAV	11	Olivia Smith	86	or	11
+ARS-14	ARS	DAV	14	Géraldine Reuteler	84	plata	17
+ARS-18	ARS	DAV	18	Chloe Kelly	85	or	11
+ARS-19	ARS	DAV	19	Lisa Baum	68	bronze	20
+ARS-23	ARS	DAV	23	Alessia Russo	93	llegenda	4
+ARS-25	ARS	DAV	25	Stina Blackstenius	81	plata	17
+ARS-29	ARS	DAV	29	Selina Cerci	77	plata	17
+MCI-1	MCI	POR	1	Eartha Cumings	74	bronze	20
+MCI-14	MCI	POR	14	Anna Moorhouse	76	plata	17
+MCI-31	MCI	POR	31	Ayaka Yamashita	85	or	11
+MCI-2	MCI	DEF	2	Risa Shimizu	80	plata	17
+MCI-4	MCI	DEF	4	Jade Rose	81	plata	17
+MCI-5	MCI	DEF	5	Alex Greenwood	86	or	11
+MCI-18	MCI	DEF	18	Kerstin Casparij	82	plata	17
+MCI-21	MCI	DEF	21	Niamh Charles	78	plata	17
+MCI-27	MCI	DEF	27	Rebecca Knaak	79	plata	17
+MCI-28	MCI	DEF	28	Gracie Prior	70	bronze	20
+MCI-6	MCI	MIG	6	Grace Clinton	84	plata	17
+MCI-17	MCI	MIG	17	Samantha Coffey	81	plata	17
+MCI-19	MCI	MIG	19	Laura Blindkilde Brown	79	plata	17
+MCI-22	MCI	MIG	22	Sydney Lohmann	80	plata	17
+MCI-25	MCI	MIG	25	Yui Hasegawa	85	or	11
+MCI-7	MCI	DAV	7	Beth Mead	84	plata	17
+MCI-8	MCI	DAV	8	Mary Fowler	83	plata	17
+MCI-9	MCI	DAV	9	Khadija Shaw	92	llegenda	4
+MCI-10	MCI	DAV	10	Vivianne Miedema	86	or	11
+MCI-11	MCI	DAV	11	Lauren Hemp	86	or	11
+MCI-20	MCI	DAV	20	Aoba Fujino	84	plata	17
+MCI-24	MCI	DAV	24	Iman Beney	80	plata	17
+MCI-37	MCI	DAV	37	Carlotta Wamser	78	plata	17
+BAY-1	BAY	POR	1	Ena Mahmutovic	81	plata	17
+BAY-22	BAY	POR	22	Regina van Eijk	70	bronze	20
+BAY-38	BAY	POR	38	Anna Klink	66	bronze	20
+BAY-2	BAY	DEF	2	Vanessa Gilles	82	plata	17
+BAY-3	BAY	DEF	3	Stine Ballisager	78	plata	17
+BAY-4	BAY	DEF	4	Glódís Viggósdóttir	85	or	11
+BAY-5	BAY	DEF	5	Magdalena Eriksson	84	plata	17
+BAY-7	BAY	DEF	7	Giulia Gwinn	87	or	11
+BAY-19	BAY	DEF	19	Katharina Naschenweng	77	plata	17
+BAY-45	BAY	DEF	45	Jana Kappes	70	bronze	20
+BAY-6	BAY	MIG	6	Kassandra Potsi	72	bronze	20
+BAY-10	BAY	MIG	10	Linda Dallmann	82	plata	17
+BAY-11	BAY	MIG	11	Sarah Mattner	74	bronze	20
+BAY-14	BAY	MIG	14	Alara Şehitler	74	bronze	20
+BAY-15	BAY	MIG	15	Bernadette Kakounan	76	plata	17
+BAY-17	BAY	MIG	17	Klara Bühl	88	or	11
+BAY-20	BAY	MIG	20	Franziska Kett	81	plata	17
+BAY-25	BAY	MIG	25	Sarah Zadrazil	81	plata	17
+BAY-28	BAY	MIG	28	Barbara Dunst	74	bronze	20
+BAY-9	BAY	DAV	9	Jovana Damnjanović	81	plata	17
+BAY-18	BAY	DAV	18	Momoko Tanikawa	82	plata	17
+BAY-21	BAY	DAV	21	Pernille Harder	89	or	11
+BAY-23	BAY	DAV	23	Sophie Proost	73	bronze	20
+BAY-29	BAY	DAV	29	Edna Imade	72	bronze	20
+RMA-1	RMA	POR	1	Merle Frohms	82	plata	17
+RMA-13	RMA	POR	13	Laia López	62	bronze	20
+RMA-2	RMA	DEF	2	Noemi	66	bronze	20
+RMA-3	RMA	DEF	3	Janou Levels	73	bronze	20
+RMA-4	RMA	DEF	4	Silvia Cristóbal	72	bronze	20
+RMA-14	RMA	DEF	14	María Méndez	79	plata	17
+RMA-21	RMA	DEF	21	Sara Holmgaard	76	plata	17
+RMA-22	RMA	DEF	22	Bella Andersson	78	plata	17
+RMA-23	RMA	DEF	23	Maëlle Lakrar	84	plata	17
+RMA-29	RMA	DEF	29	Noelia Llamas	64	bronze	20
+RMA-8	RMA	MIG	8	Sara Däbritz	79	plata	17
+RMA-15	RMA	MIG	15	Irune Dorado	70	bronze	20
+RMA-16	RMA	MIG	16	Filippa Angeldahl	81	plata	17
+RMA-17	RMA	MIG	17	Andreia Jacinto	78	plata	17
+RMA-20	RMA	MIG	20	Elisa Senss	80	plata	17
+RMA-24	RMA	MIG	24	Arianna Caruso	80	plata	17
+RMA-31	RMA	MIG	31	Oihane San Martín	66	bronze	20
+RMA-5	RMA	DAV	5	Pau Comendador	66	bronze	20
+RMA-7	RMA	DAV	7	Lotte Keukelaar	72	bronze	20
+RMA-9	RMA	DAV	9	Signe Bruun	76	bronze	20
+RMA-10	RMA	DAV	10	Athenea del Castillo	86	or	11
+RMA-11	RMA	DAV	11	Lineth Beerensteyn	85	or	11
+RMA-12	RMA	DAV	12	Felicia Schröder	80	plata	17
+RMA-18	RMA	DAV	18	Linda Caicedo	89	or	11
+RMA-19	RMA	DAV	19	Eva Navarro	80	plata	17
+PSG-1	PSG	POR	1	Katarzyna Kiedrzynek	82	plata	17
+PSG-16	PSG	POR	16	Oliwia Szperkowska	76	bronze	20
+PSG-25	PSG	POR	25	Maren Groothoff	72	bronze	20
+PSG-33	PSG	POR	33	Océane Toussaint	70	bronze	20
+PSG-40	PSG	POR	40	Camille Masson	64	bronze	20
+PSG-2	PSG	DEF	2	Thiniba Samoura	80	plata	17
+PSG-3	PSG	DEF	3	Andjela Krstić	74	bronze	20
+PSG-4	PSG	DEF	4	Paulina Dudek	80	plata	17
+PSG-7	PSG	DEF	7	Sakina Karchaoui	85	or	11
+PSG-12	PSG	DEF	12	Isabela Chagas	76	bronze	20
+PSG-20	PSG	DEF	20	Tara Elimbi Gilbert	77	plata	17
+PSG-26	PSG	DEF	26	Anaïs Ebayilin	70	bronze	20
+PSG-29	PSG	DEF	29	Griedge Mbock Bathy	79	plata	17
+PSG-77	PSG	DEF	77	Olga Carmona	82	plata	17
+PSG-6	PSG	MIG	6	Jennifer Echegini	82	plata	17
+PSG-8	PSG	MIG	8	Vitória Yaya	75	bronze	20
+PSG-11	PSG	MIG	11	Florianne Jourde	77	plata	17
+PSG-14	PSG	MIG	14	Jackie Groenen	80	plata	17
+PSG-28	PSG	MIG	28	Jade Le Guilly	76	bronze	20
+PSG-30	PSG	MIG	30	Emilie Østerås	77	plata	17
+PSG-34	PSG	MIG	34	Alyssa Charlier	70	bronze	20
+PSG-10	PSG	DAV	10	Rasheedat Ajibade	81	plata	17
+PSG-17	PSG	DAV	17	Romée Leuchter	79	plata	17
+PSG-18	PSG	DAV	18	Naomie Feller	80	plata	17
+PSG-19	PSG	DAV	19	Merveille Kanjinga	78	plata	17
+PSG-57	PSG	DAV	57	Léa Morissaint	70	bronze	20
+JUV-1	JUV	POR	1	Danielle de Jong	79	plata	17
+JUV-21	JUV	POR	21	Larissa Rusek	72	bronze	20
+JUV-3	JUV	DEF	3	Estela Carbonell	76	bronze	20
+JUV-4	JUV	DEF	4	Kysha Sylla	74	bronze	20
+JUV-8	JUV	DEF	8	Martina Rosucci	75	bronze	20
+JUV-23	JUV	DEF	23	Cecilia Salvai	76	bronze	20
+JUV-27	JUV	DEF	27	Federica D'Auria	75	bronze	20
+JUV-71	JUV	DEF	71	Martina Lenzini	75	bronze	20
+JUV-6	JUV	MIG	6	Eva Schatzer	78	plata	17
+JUV-14	JUV	MIG	14	Júlia Bartel	77	plata	17
+JUV-15	JUV	MIG	15	Annamaria Serturini	77	plata	17
+JUV-16	JUV	MIG	16	Danique Noordman	74	bronze	20
+JUV-17	JUV	MIG	17	Emma Stølen Godø	75	bronze	20
+JUV-19	JUV	MIG	19	Matilde Pavan	73	bronze	20
+JUV-26	JUV	MIG	26	Lea Khelifi	72	bronze	20
+JUV-29	JUV	MIG	29	Tatiana Pinto	77	plata	17
+JUV-30	JUV	MIG	30	Manaka Hayashi	76	bronze	20
+JUV-46	JUV	MIG	46	Cris Librán	71	bronze	20
+JUV-9	JUV	DAV	9	Chiara Beccari	74	bronze	20
+JUV-20	JUV	DAV	20	Alba Redondo	81	plata	17
+JUV-22	JUV	DAV	22	Remina Chiba	76	bronze	20
+JUV-28	JUV	DAV	28	Ornella Graziani	68	bronze	20
+JUV-77	JUV	DAV	77	Amaiur Sarriegi	77	plata	17
+ROM-1	ROM	POR	1	Lana Klobučarević	58	bronze	20
+ROM-24	ROM	POR	24	Rachele Baldi	75	bronze	20
+ROM-36	ROM	POR	36	Valentina Soggiu	64	bronze	20
+ROM-4	ROM	DEF	4	Winonah Heatley	72	bronze	20
+ROM-5	ROM	DEF	5	Maya Antoine	72	bronze	20
+ROM-12	ROM	DEF	12	Ella Ottey	69	bronze	20
+ROM-13	ROM	DEF	13	Elisabetta Oliviero	75	bronze	20
+ROM-19	ROM	DEF	19	Shukurat Oladipo	73	bronze	20
+ROM-23	ROM	DEF	23	Valentina Bergamaschi	76	bronze	20
+ROM-29	ROM	DEF	29	Annalena Rieke	74	bronze	20
+ROM-32	ROM	DEF	32	Bianca Vergani	66	bronze	20
+ROM-78	ROM	DEF	78	Magda Piekarska	63	bronze	20
+ROM-6	ROM	MIG	6	Maya Doms	73	bronze	20
+ROM-8	ROM	MIG	8	Kayleigh Van Dooren	74	bronze	20
+ROM-10	ROM	MIG	10	Manuela Giugliano	81	plata	17
+ROM-14	ROM	MIG	14	Giada Pellegrino Cimò	70	bronze	20
+ROM-20	ROM	MIG	20	Giada Greggi	77	plata	17
+ROM-22	ROM	MIG	22	Marta Pandini	72	bronze	20
+ROM-25	ROM	MIG	25	Frederikke Thøgersen	74	bronze	20
+ROM-7	ROM	DAV	7	Sofia Jahnukainen	68	bronze	20
+ROM-11	ROM	DAV	11	Alayah Pilgrim	74	bronze	20
+ROM-16	ROM	DAV	16	Alice Corelli	71	bronze	20
+ROM-18	ROM	DAV	18	Martina Piemonte	75	bronze	20
+ROM-30	ROM	DAV	30	Rinsola Babajide	74	bronze	20
+PFC-16	PFC	POR	16	Mylène Chavas	78	plata	17
+PFC-22	PFC	POR	22	Kinga Seweryn	73	bronze	20
+PFC-30	PFC	POR	30	Rafaela Mendonça	62	bronze	20
+PFC-40	PFC	POR	40	Clélia Ducreux	60	bronze	20
+PFC-2	PFC	DEF	2	Célina Ould Hocine	74	bronze	20
+PFC-3	PFC	DEF	3	Manoly Baquerizo	70	bronze	20
+PFC-5	PFC	DEF	5	Hillary Diaz	70	bronze	20
+PFC-13	PFC	DEF	13	Íris Fernandes	67	bronze	20
+PFC-18	PFC	DEF	18	Melween N'Dongala	72	bronze	20
+PFC-19	PFC	DEF	19	Théa Greboval	74	bronze	20
+PFC-23	PFC	DEF	23	Saki Ishizaka	69	bronze	20
+PFC-26	PFC	DEF	26	Fiona Liaigre	66	bronze	20
+PFC-33	PFC	DEF	33	Hajar Saïd	64	bronze	20
+PFC-4	PFC	MIG	4	Kaja Korošec	76	bronze	20
+PFC-8	PFC	MIG	8	Daphne Corboz	75	bronze	20
+PFC-11	PFC	MIG	11	Sheika Scott	70	bronze	20
+PFC-21	PFC	MIG	21	Océane Picard	68	bronze	20
+PFC-24	PFC	MIG	24	Anaële Le Moguédec	74	bronze	20
+PFC-27	PFC	MIG	27	Maeline Mendy	71	bronze	20
+PFC-31	PFC	MIG	31	Kenza Dufour	65	bronze	20
+PFC-7	PFC	DAV	7	Mariam Toloba	75	bronze	20
+PFC-10	PFC	DAV	10	Clara Mateo	79	plata	17
+PFC-14	PFC	DAV	14	Evelyne Viens	76	bronze	20
+PFC-15	PFC	DAV	15	Hawa Sangare	72	bronze	20
+PFC-20	PFC	DAV	20	Klaudia Jedlińska	70	bronze	20
+PFC-25	PFC	DAV	25	Karla Torres	67	bronze	20
+PFC-34	PFC	DAV	34	Aurélie Reynders	71	bronze	20
+BEN-1	BEN	POR	1	Lena Pauels	76	bronze	20
+BEN-46	BEN	POR	46	Michaely Bihina	60	bronze	20
+BEN-3	BEN	DEF	3	Inês Meninas	65	bronze	20
+BEN-4	BEN	DEF	4	Blessing Demehin	70	bronze	20
+BEN-5	BEN	DEF	5	Marit Bratberg Lund	72	bronze	20
+BEN-11	BEN	DEF	11	Ana Borges	74	bronze	20
+BEN-14	BEN	DEF	14	Anna Csiki	73	bronze	20
+BEN-19	BEN	DEF	19	Catarina Amado	73	bronze	20
+BEN-22	BEN	DEF	22	Diana Gomes	74	bronze	20
+BEN-31	BEN	DEF	31	Tinkara Testen	71	bronze	20
+BEN-56	BEN	DEF	56	Carolina Simões	63	bronze	20
+BEN-8	BEN	MIG	8	Andreia Norton	74	bronze	20
+BEN-16	BEN	MIG	16	Clara Oliveira	67	bronze	20
+BEN-21	BEN	MIG	21	Pauleta	75	bronze	20
+BEN-23	BEN	MIG	23	Carolina Tristão	71	bronze	20
+BEN-7	BEN	DAV	7	Frøya Dorsin	72	bronze	20
+BEN-9	BEN	DAV	9	Nycole Raysla	71	bronze	20
+BEN-10	BEN	DAV	10	Caroline Møller	76	bronze	20
+BEN-13	BEN	DAV	13	Lucia Alves	75	bronze	20
+BEN-18	BEN	DAV	18	Flourish Sabastine	69	bronze	20
+BEN-24	BEN	DAV	24	Janet Akekoromowei	66	bronze	20
+BEN-25	BEN	DAV	25	Chandra Davidson	76	bronze	20
+BEN-26	BEN	DAV	26	Shao Ziqin	70	bronze	20
+BEN-77	BEN	DAV	77	Neide Guedes	68	bronze	20
+INT-1	INT	POR	1	Cecilía Rúnarsdóttir	76	bronze	20
+INT-12	INT	POR	12	Camilla Forcinella	62	bronze	20
+INT-99	INT	POR	99	Elena Belli	60	bronze	20
+INT-2	INT	DEF	2	Emma Kullberg	72	bronze	20
+INT-4	INT	DEF	4	Samantha van Diemen	72	bronze	20
+INT-5	INT	DEF	5	Ivana Andrés	74	bronze	20
+INT-6	INT	DEF	6	Irene Santi	70	bronze	20
+INT-14	INT	DEF	14	Chiara Robustellini	69	bronze	20
+INT-15	INT	DEF	15	Sheila García	71	bronze	20
+INT-33	INT	DEF	33	Elisa Bartoli	73	bronze	20
+INT-8	INT	MIG	8	Karólína Vilhjálmsdóttir	74	bronze	20
+INT-10	INT	MIG	10	Lina Magull	77	plata	17
+INT-16	INT	MIG	16	Maša Tomašević	72	bronze	20
+INT-20	INT	MIG	20	Marie Detruyer	69	bronze	20
+INT-24	INT	MIG	24	Marija Milinković	71	bronze	20
+INT-29	INT	MIG	29	Rachele Giudici	64	bronze	20
+INT-7	INT	DAV	7	Haley Bugeja	76	bronze	20
+INT-9	INT	DAV	9	Elisa Polli	72	bronze	20
+INT-11	INT	DAV	11	Clarisse Le Bihan	70	bronze	20
+INT-17	INT	DAV	17	Toni Payne	73	bronze	20
+INT-18	INT	DAV	18	Benedetta Glionna	69	bronze	20
+INT-22	INT	DAV	22	Olivia Schough	74	bronze	20
+INT-26	INT	DAV	26	Brittany Raphino	67	bronze	20
+INT-36	INT	DAV	36	Michela Cambiaghi	73	bronze	20
+HAC-13	HAC	POR	13	Jennifer Falk	73	bronze	20
+HAC-29	HAC	POR	29	Hanna Karlsson	67	bronze	20
+HAC-3	HAC	DEF	3	Aivi Luik	72	bronze	20
+HAC-4	HAC	DEF	4	Emma Östlund	69	bronze	20
+HAC-12	HAC	DEF	12	Stine Sandbech	68	bronze	20
+HAC-14	HAC	DEF	14	Tilde Karlsson	64	bronze	20
+HAC-15	HAC	DEF	15	Alva Selerud	69	bronze	20
+HAC-18	HAC	DEF	18	Lisa Löwing	66	bronze	20
+HAC-19	HAC	DEF	19	Nesrin Akgün	62	bronze	20
+HAC-20	HAC	DEF	20	Josefine Rybrink	71	bronze	20
+HAC-22	HAC	DEF	22	Ella McBride	65	bronze	20
+HAC-28	HAC	DEF	28	Halimatu Ayinde	65	bronze	20
+HAC-5	HAC	MIG	5	Laney Egbuka	70	bronze	20
+HAC-7	HAC	MIG	7	Pernille Sanvig	72	bronze	20
+HAC-21	HAC	MIG	21	Jóhanna Fossdalsá	66	bronze	20
+HAC-26	HAC	MIG	26	Nathalie Staaf	63	bronze	20
+HAC-6	HAC	DAV	6	Joy Omewa	68	bronze	20
+HAC-9	HAC	DAV	9	Maja Bodin	70	bronze	20
+HAC-10	HAC	DAV	10	Anna Anvegård	74	bronze	20
+HAC-11	HAC	DAV	11	Tuva Ölvestad	64	bronze	20
+HAC-17	HAC	DAV	17	Faith Chinzimu	64	bronze	20
+HAC-24	HAC	DAV	24	Tabitha Tindell	70	bronze	20
+HAC-27	HAC	DAV	27	Thelma Pálmadóttir	71	bronze	20
+HBK-1	HBK	POR	1	Alberte Vingum	71	bronze	20
+HBK-30	HBK	POR	30	Emilie Møller	56	bronze	20
+HBK-66	HBK	POR	66	Lauren Kozal	65	bronze	20
+HBK-2	HBK	DEF	2	Maria Uhre	68	bronze	20
+HBK-4	HBK	DEF	4	Yukina Sakabe	63	bronze	20
+HBK-5	HBK	DEF	5	Sydney Jones	63	bronze	20
+HBK-15	HBK	DEF	15	Ida Marie Jørgensen	59	bronze	20
+HBK-19	HBK	DEF	19	Aissatou Fall	58	bronze	20
+HBK-25	HBK	DEF	25	Augusta Callesen	58	bronze	20
+HBK-27	HBK	DEF	27	Andrea Termansen	57	bronze	20
+HBK-28	HBK	DEF	28	Simone Boye Sørensen	70	bronze	20
+HBK-32	HBK	DEF	32	Emma Flick	66	bronze	20
+HBK-6	HBK	MIG	6	Aemu Oyama	66	bronze	20
+HBK-12	HBK	MIG	12	Sarah Thygesen	65	bronze	20
+HBK-13	HBK	MIG	13	Catherine Paulson	66	bronze	20
+HBK-23	HBK	MIG	23	Mille Gejl	68	bronze	20
+HBK-24	HBK	MIG	24	Laura Hermann	62	bronze	20
+HBK-88	HBK	MIG	88	Zuzanna Witek	65	bronze	20
+HBK-3	HBK	DAV	3	Macy Schultz	67	bronze	20
+HBK-7	HBK	DAV	7	Kyra Carusa	70	bronze	20
+HBK-8	HBK	DAV	8	Mai Wendicke	60	bronze	20
+HBK-9	HBK	DAV	9	Nadia Nadim	73	bronze	20
+HBK-10	HBK	DAV	10	Mercy Chipasula	62	bronze	20
+HBK-17	HBK	DAV	17	Rikke Madsen	66	bronze	20
+HBK-22	HBK	DAV	22	Emelía Óskarsdóttir	64	bronze	20
+HBK-33	HBK	DAV	33	Mwanalima Jereko	67	bronze	20
+SER-13	SER	POR	13	Jacintha Weimar	69	bronze	20
+SER-30	SER	POR	30	Manon Le Page	60	bronze	20
+SER-3	SER	DEF	3	Daïna Bourma	64	bronze	20
+SER-14	SER	DEF	14	Laia Ballesté	64	bronze	20
+SER-20	SER	DEF	20	Chiara Wallin	58	bronze	20
+SER-22	SER	DEF	22	Amanda Chaney	58	bronze	20
+SER-23	SER	DEF	23	Amina Muratovic	63	bronze	20
+SER-24	SER	DEF	24	Joana Marchão	66	bronze	20
+SER-28	SER	DEF	28	Noémie Carage	65	bronze	20
+SER-78	SER	DEF	78	Benedicte Simon	64	bronze	20
+SER-6	SER	MIG	6	Paola Hernández	70	bronze	20
+SER-10	SER	MIG	10	Ghoutia Karchouni	67	bronze	20
+SER-19	SER	MIG	19	Paula Serrano	68	bronze	20
+SER-21	SER	MIG	21	Laura Strik	61	bronze	20
+SER-64	SER	MIG	64	Stefanie De Alem	61	bronze	20
+SER-66	SER	MIG	66	Elodie Nakkach	63	bronze	20
+SER-7	SER	DAV	7	Natasha Andonova	68	bronze	20
+SER-9	SER	DAV	9	Gloria Marinelli	68	bronze	20
+SER-11	SER	DAV	11	Magdalena Sobal	66	bronze	20
+SER-12	SER	DAV	12	Mickaella Cardia	63	bronze	20
+SER-25	SER	DAV	25	Meriame Terchoun	67	bronze	20
+OHL-1	OHL	POR	1	Faye Lammertijn	57	bronze	20
+OHL-24	OHL	POR	24	Lieke Cremers	53	bronze	20
+OHL-29	OHL	POR	29	Lowiese Seynhaeve	67	bronze	20
+OHL-2	OHL	DEF	2	Saar Janssen	61	bronze	20
+OHL-3	OHL	DEF	3	Kim Everaerts	64	bronze	20
+OHL-4	OHL	DEF	4	Virág Nagy	61	bronze	20
+OHL-5	OHL	DEF	5	Kimberley Smit	64	bronze	20
+OHL-15	OHL	DEF	15	Amélie Van Holderbeke	55	bronze	20
+OHL-21	OHL	DEF	21	Flo Hermans	58	bronze	20
+OHL-25	OHL	DEF	25	Agathe Ollivier	62	bronze	20
+OHL-28	OHL	DEF	28	Sterre Gielen	64	bronze	20
+OHL-31	OHL	DEF	31	Norah Buijsrogge	54	bronze	20
+OHL-7	OHL	MIG	7	Alixe Bosteels	63	bronze	20
+OHL-8	OHL	MIG	8	Manon Van Raay	60	bronze	20
+OHL-10	OHL	MIG	10	Camille Lafaix	64	bronze	20
+OHL-18	OHL	MIG	18	Lily Hoekx	57	bronze	20
+OHL-19	OHL	MIG	19	Jeslynn Kuijpers	66	bronze	20
+OHL-23	OHL	MIG	23	Lili Verstrepen	55	bronze	20
+OHL-30	OHL	MIG	30	Julie Biesmans	66	bronze	20
+OHL-6	OHL	DAV	6	Linnea Strömberg	60	bronze	20
+OHL-9	OHL	DAV	9	Jada Conijnenberg	66	bronze	20
+OHL-11	OHL	DAV	11	Ioanna Papatheodorou	63	bronze	20
+OHL-16	OHL	DAV	16	Kadhiya De Ceuster	60	bronze	20
+OHL-26	OHL	DAV	26	Isabella Dekker	64	bronze	20
+OHL-32	OHL	DAV	32	Anna Corneillie	54	bronze	20
+AUS-1	AUS	POR	1	Jasmin Pal	66	bronze	20
+AUS-12	AUS	POR	12	Emma Goetz	55	bronze	20
+AUS-4	AUS	DEF	4	Chiara Pucci	59	bronze	20
+AUS-5	AUS	DEF	5	Tatjana Weiss	62	bronze	20
+AUS-8	AUS	DEF	8	Katharina Schiechtl	64	bronze	20
+AUS-13	AUS	DEF	13	Virginia Kirchberger	64	bronze	20
+AUS-18	AUS	DEF	18	Verena Hanshaw	64	bronze	20
+AUS-23	AUS	DEF	23	Carina Wenninger	65	bronze	20
+AUS-24	AUS	DEF	24	Yvonne Weilharter	60	bronze	20
+AUS-2	AUS	MIG	2	Louise Schöffel	61	bronze	20
+AUS-6	AUS	MIG	6	Lotta Cordes	63	bronze	20
+AUS-7	AUS	MIG	7	Elisa Pfattner	63	bronze	20
+AUS-10	AUS	MIG	10	Andrea Glibo	60	bronze	20
+AUS-11	AUS	MIG	11	Almedina Sisic	57	bronze	20
+AUS-15	AUS	MIG	15	Patricia Pfanner	64	bronze	20
+AUS-21	AUS	MIG	21	Lucia Orkić	58	bronze	20
+AUS-28	AUS	MIG	28	Nina-Katrin Pichler	54	bronze	20
+AUS-29	AUS	MIG	29	Valentina Pötzl	59	bronze	20
+AUS-38	AUS	MIG	38	Dominika Škorvánková	62	bronze	20
+AUS-14	AUS	DAV	14	Sandra Jakobsen	61	bronze	20
+AUS-22	AUS	DAV	22	Modesta Uka	68	bronze	20`;
+</script>
+<script>
+/* ========================================================================
+   CONFIGURACIÓ
+   Regles del joc, categories, formacions i noms de les rareses.
+   ======================================================================== */
+var CONFIG_JOC = {
+  nom: "UWCL Stars",
+  temporada: "2026/27",
+  descripcio: "{cromos} cromos de les {grups} plantilles de la Champions femenina 2026/27. Obre sobres, omple l'àlbum i munta el teu onze.",
+  urlServidor: "",          // sense servidor: la partida es desa al navegador
+  gemmesInicials: 20,       // gemmes per començar
+  preuSobre: 1,             // gemmes que costa un sobre
+  cartesPerSobre: 5,        // cromos de cada sobre
+  // Butlletes per raresa: només s'usen si una carta no en té a la base de dades.
+  butlletesPerRaresa: { bronze: 20, plata: 17, or: 11, llegenda: 4 },
+  garantia: null,           // exemple: { raresa: "llegenda", cadaSobres: 40 }
+  repetidesPerCanvi: 0,
+  laboratoriLocal: false,
+  permetReiniciar: true,
+};
+
+// Categories (al futbol, les posicions). Els codis han de coincidir amb la columna «categoria».
+var POSICIONS_JOC = { POR: "Portera", DEF: "Defensa", MIG: "Migcampista", DAV: "Davantera" };
+var POSICIONS_PLURAL_JOC = { POR: "Porteres", DEF: "Defenses", MIG: "Migcampistes", DAV: "Davanteres" };
+
+// Com es forma l'equip: places de cada categoria. Totes les formacions han de sumar el mateix.
+var FORMACIONS_JOC = {
+  "4-3-3": { POR: 1, DEF: 4, MIG: 3, DAV: 3 },
+  "4-4-2": { POR: 1, DEF: 4, MIG: 4, DAV: 2 },
+  "3-5-2": { POR: 1, DEF: 3, MIG: 5, DAV: 2 },
+};
+
+// Noms de les quatre rareses (els codis bronze/plata/or/llegenda no es canvien).
+var RARESES_JOC = { bronze: "Bronze", plata: "Plata", or: "Or", llegenda: "Llegenda" };
+
+/* ---- Lectura de les taules (no cal tocar-ho) ---- */
+function llegeixTaula(text, nomTaula, columnes) {
+  var linies = text.trim().split(/\r?\n/);
+  return linies.slice(1).filter(function (l) { return l.trim(); }).map(function (l, i) {
+    var c = l.split(/\t|;/).map(function (x) { return x.trim(); });
+    if (c.length < columnes) throw new Error("A la taula " + nomTaula + ", la fila " + (i + 2) + " té " + c.length + " columnes i n'hauria de tenir " + columnes + ": «" + l + "»");
+    return c;
+  });
+}
+var CLUBS_JOC = {};
+llegeixTaula(TAULA_GRUPS, "GRUPS", 6).forEach(function (c) {
+  CLUBS_JOC[c[0]] = { nom: c[1], curt: c[2], color1: c[3], color2: c[4], text: c[5] };
+});
+var RARESES_VALIDES = Object.keys(RARESES_JOC);
+var FILES_CARTES = llegeixTaula(TAULA_CARTES, "CARTES", 7).map(function (c, i) {
+  var fila = i + 2;
+  if (!CLUBS_JOC[c[1]]) throw new Error("Fila " + fila + " de CARTES: el grup «" + c[1] + "» no és a la taula GRUPS.");
+  if (!POSICIONS_JOC[c[2]]) throw new Error("Fila " + fila + " de CARTES: la categoria «" + c[2] + "» no és a POSICIONS_JOC.");
+  if (RARESES_VALIDES.indexOf(c[6]) < 0) throw new Error("Fila " + fila + " de CARTES: la raresa ha de ser bronze, plata, or o llegenda.");
+  var b = c[7] === undefined || c[7] === "" ? undefined : parseInt(c[7], 10);
+  return [c[0], c[1], c[2], c[3], c[4], parseFloat(String(c[5]).replace(",", ".")) || 0, c[6], b];
+});
+var CARTES_JOC = FILES_CARTES.map(function (f, i) {
+  return { id: f[0], num: i + 1, club: f[1], pos: f[2], dorsal: f[3], nom: f[4], valor: f[5], raresa: f[6], butlletes: f[7] };
+});
+</script>
+<script>
+/* ========================================================================
+   CONNEXIÓ (sense servidor en aquesta plantilla)
+   No cal tocar-ho.
+   ======================================================================== */
+/* ===========================================================================
+   CONNEXIÓ AMB EL FULL DE GOOGLE
+   Si CONFIG_JOC.urlServidor és buida, tot funciona en mode local.
+   =========================================================================== */
+var Servidor = (function () {
+  "use strict";
+  var url = CONFIG_JOC.urlServidor;
+
+  function llegeix(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function escriu(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* sense desar */ } }
+  function esborra(k) { try { localStorage.removeItem(k); } catch (e) { /* res */ } }
+
+  function demana(params) {
+    var q = Object.keys(params).map(function (k) { return k + "=" + encodeURIComponent(params[k]); }).join("&");
+    return fetch(url + "?" + q, { redirect: "follow" }).then(resposta);
+  }
+
+  function envia(cos) {
+    // text/plain evita la comprovació prèvia de CORS que Apps Script no accepta.
+    return fetch(url, { method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(cos) }).then(resposta);
+  }
+
+  function resposta(r) {
+    if (!r.ok) throw new Error("El servidor ha respost amb l'error " + r.status + ".");
+    return r.json().then(function (d) {
+      if (!d.ok) { var e = new Error(d.error || "Error desconegut del servidor."); e.delServidor = true; e.dades = d; throw e; }
+      return d;
+    });
+  }
+
+  return {
+    actiu: !!url,
+
+    // Retorna { atorgades, partida } o llança un error.
+    entra: function (codi) {
+      if (!url) return Promise.resolve({ atorgades: CONFIG_JOC.gemmesInicials, partida: null, local: true });
+      return demana({ accio: "entra", codi: codi });
+    },
+
+    // Desa la partida i els sobres pendents d'enviar.
+    desa: function (codi, partida, resum) {
+      var clau = "uwcl-stars:pendents:" + codi;
+      var pendents = [];
+      try { pendents = JSON.parse(llegeix(clau)) || []; } catch (e) { pendents = []; }
+      if (!url) return Promise.resolve({ local: true });
+      return envia({ accio: "desa", codi: codi, partida: partida, resum: resum, sobresNous: pendents }).then(function (d) {
+        esborra(clau);
+        return d;
+      });
+    },
+
+    // Guarda un sobre obert a la cua local fins que s'enviï.
+    afegeixPendent: function (codi, sobre) {
+      if (!url) return;
+      var clau = "uwcl-stars:pendents:" + codi;
+      var pendents = [];
+      try { pendents = JSON.parse(llegeix(clau)) || []; } catch (e) { pendents = []; }
+      pendents.push(sobre);
+      escriu(clau, JSON.stringify(pendents));
+    },
+
+    hiHaPendents: function (codi) {
+      try { return (JSON.parse(llegeix("uwcl-stars:pendents:" + codi)) || []).length > 0; } catch (e) { return false; }
+    },
+
+    classe: function () {
+      if (!url) return Promise.resolve({ files: [], local: true });
+      return demana({ accio: "classe" });
+    },
+  };
+})();
+
+var Lab = { inicia: function () {}, vista: function () { return ''; }, clic: function () { return false; }, canvi: function () { return false; } };
+</script>
+<script>
+/* ========================================================================
+   PANTALLES
+   Textos i funcionament de les pantalles. Es poden canviar textos i aspecte.
+   ======================================================================== */
+/* ===========================================================================
+   PANTALLES DEL JOC
+   Aquest fitxer només dibuixa i reacciona. L'atzar el decideix motor.js
+   i la connexió amb el full de Google, servidor.js.
+   =========================================================================== */
+(function () {
+  "use strict";
+
+  var C = CONFIG_JOC;
+  var bossa = Motor.creaBossa(CARTES_JOC, C);
+  var perId = {};
+  CARTES_JOC.forEach(function (c) { perId[c.id] = c; });
+  var atzar = Motor.creaAtzar();
+  var CLAU = "uwcl-stars:";
+  // Tot el que és propi del futbol és a dades.js: posicions, formacions i rareses.
+  var ORDRE_POS = Object.keys(POSICIONS_JOC);
+  var PLURAL_POS = POSICIONS_PLURAL_JOC;
+  var NOM_RARESA = RARESES_JOC;
+  var RARESES = ["llegenda", "or", "plata", "bronze"];
+  var FORMACIONS = FORMACIONS_JOC;
+  var MIDA_EQUIP = (function () { var f = FORMACIONS[Object.keys(FORMACIONS)[0]]; return Object.keys(f).reduce(function (a, k) { return a + f[k]; }, 0); })();
+  function posDe(clau) { return clau.split(":")[0]; }
+  var TOTAL_RARESA = {};
+  CARTES_JOC.forEach(function (c) { TOTAL_RARESA[c.raresa] = (TOTAL_RARESA[c.raresa] || 0) + 1; });
+  var CLUBS = Object.keys(CLUBS_JOC);
+  var LENT = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var FITES = [
+    { id: "primer", nom: "Primer sobre", desc: "Obre el teu primer sobre.", fet: function (x) { return x.sobres >= 1; } },
+    { id: "or", nom: "Brillantor", desc: "Aconsegueix el primer cromo d'or.", fet: function (x) { return x.tinc.or >= 1; } },
+    { id: "llegenda", nom: "Llegenda", desc: "Aconsegueix una de les " + (TOTAL_RARESA.llegenda || 0) + " llegendes.", fet: function (x) { return x.tinc.llegenda >= 1; } },
+    { id: "c50", nom: "Mig centenar", desc: "Tingues 50 cromos diferents.", fet: function (x) { return x.diferents >= 50; } },
+    { id: "c100", nom: "Centenar", desc: "Tingues 100 cromos diferents.", fet: function (x) { return x.diferents >= 100; } },
+    { id: "c200", nom: "Gran col·lecció", desc: "Tingues 200 cromos diferents.", fet: function (x) { return x.diferents >= 200; } },
+    { id: "gira", nom: "Gira europea", desc: "Tingues almenys un cromo de cada un dels " + CLUBS.length + " clubs.", fet: function (x) { return x.clubsAmb === CLUBS.length; } },
+    { id: "club", nom: "Plantilla completa", desc: "Completa tots els cromos d'un club.", fet: function (x) { return x.clubsComplets >= 1; } },
+    { id: "onze", nom: "Onze titular", desc: "Omple les " + MIDA_EQUIP + " posicions del teu equip.", fet: function (x) { return x.onzeN === MIDA_EQUIP; } },
+    { id: "onze80", nom: "Nivell Champions", desc: "Arriba a 80 de valor d'equip.", fet: function (x) { return x.valorOnze >= 80; } },
+    { id: "muralla", nom: "Línia d'or", desc: "Una línia completa de l'equip (de més d'una plaça) amb cromos d'or o llegenda.", fet: function (x) { return x.muralla; } },
+    { id: "unclub", nom: "Fidelitat", desc: "Equip complet amb cromos d'un sol club.", fet: function (x) { return x.unClub; } },
+    { id: "rep5", nom: "Quina mania", desc: "Tingues 5 còpies d'un mateix cromo.", fet: function (x) { return x.maxCopies >= 5; } },
+    { id: "obrir100", nom: "100 cromos oberts", desc: "Obre 20 sobres en total.", fet: function (x) { return x.sobres >= 20; } },
+  ];
+
+  var app = document.getElementById("app");
+  var s = {
+    codi: null, nom: "", estat: null, onze: {}, formacio: Object.keys(FORMACIONS_JOC)[0], fitesVistes: [], atorgades: 0,
+    vista: "sobres", darrer: null, lloc: null, suplent: null, detall: null,
+    filtre: { club: "tots", raresa: "totes", mostra: "tots" },
+    error: "", carregant: false, confirma: false, sincro: Servidor.actiu ? "ok" : "local", sincroError: "",
+    classe: null, ordreClasse: "valorOnze", avisos: [], laboratori: false,
+  };
+  var temporitzadors = [];
+  var esperaOnze = null;
+
+  /* ---- Desar ---------------------------------------------------------- */
+  function llegeix(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function escriu(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* el joc continua sense desar */ } }
+  function esborra(k) { try { localStorage.removeItem(k); } catch (e) { /* res */ } }
+
+  function partida() {
+    return { estat: s.estat, onze: s.onze, formacio: s.formacio, fitesVistes: s.fitesVistes };
+  }
+
+  function desaLocal() {
+    if (!s.codi) return;
+    escriu(CLAU + s.codi, JSON.stringify(partida()));
+    escriu(CLAU + "darrer", s.codi);
+  }
+
+  function carregaLocal(codi) {
+    try {
+      var d = JSON.parse(llegeix(CLAU + codi));
+      if (d && d.estat) return d;
+    } catch (e) { /* partida il·legible */ }
+    return null;
+  }
+
+  function sincronitza() {
+    desaLocal();
+    if (!Servidor.actiu) return;
+    marcaSincro("desant");
+    var codi = s.codi;
+    Servidor.desa(codi, partida(), resumPartida()).then(function (d) {
+      if (codi !== s.codi) return;
+      if (d.atorgades !== undefined && d.atorgades !== s.atorgades) { s.atorgades = d.atorgades; actualitzaGemmes(); }
+      marcaSincro("ok");
+    }).catch(function (e) {
+      if (codi !== s.codi) return;
+      s.sincroError = e.delServidor ? e.message : "";
+      marcaSincro(e.delServidor ? "error" : "pendent");
+    });
+  }
+
+  function marcaSincro(estat) {
+    s.sincro = estat;
+    var el = document.getElementById("sincro");
+    if (el) { el.className = "sincro " + estat; el.textContent = textSincro(); el.title = s.sincroError || ""; }
+  }
+
+  function textSincro() {
+    return { local: "Mode local", ok: "Desat", desant: "Desant…", pendent: "Sense connexió: es desarà després", error: "Error en desar" }[s.sincro];
+  }
+
+  setInterval(function () {
+    if (s.codi && Servidor.actiu && (s.sincro === "pendent" || Servidor.hiHaPendents(s.codi))) sincronitza();
+  }, 30000);
+
+  /* ---- Càlculs -------------------------------------------------------- */
+  function esc(t) {
+    return String(t).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function plural(n, u, m) { return n + " " + (n === 1 ? u : m); }
+  function coma(x) { return String(x).replace(".", ","); }
+  function textCopies(n) { return n + (n === 1 ? " còpia disponible" : " còpies disponibles"); }
+  function colorsClub(carta) {
+    var club = CLUBS_JOC[carta.club];
+    return "--c1:" + club.color1 + ";--c2:" + club.color2 + ";--ct:" + club.text;
+  }
+
+  function actualitzaGemmes() {
+    if (!s.estat) return;
+    s.estat.gemmes = Math.max(0, s.atorgades - s.estat.sobres * C.preuSobre);
+  }
+
+  function llocsFormacio() {
+    var f = FORMACIONS[s.formacio];
+    var llocs = [];
+    ORDRE_POS.slice().reverse().forEach(function (pos) {
+      var linia = [];
+      for (var i = 0; i < f[pos]; i++) linia.push(pos + ":" + i);
+      llocs.push(linia);
+    });
+    return llocs;
+  }
+
+  function valorEquip() {
+    var ids = Object.keys(s.onze).map(function (k) { return s.onze[k]; }).filter(Boolean);
+    var suma = ids.reduce(function (t, id) { return t + perId[id].valor; }, 0);
+    return { mitjana: ids.length ? suma / MIDA_EQUIP : 0, n: ids.length };
+  }
+
+  function estadistiques() {
+    var e = s.estat;
+    var primera = null;
+    var oberts = { bronze: 0, plata: 0, or: 0, llegenda: 0 };
+    e.historial.forEach(function (sobre, i) {
+      sobre.forEach(function (id) {
+        var r = perId[id].raresa;
+        oberts[r] += 1;
+        if (r === "llegenda" && primera === null) primera = i + 1;
+      });
+    });
+    var tinc = { bronze: 0, plata: 0, or: 0, llegenda: 0 };
+    var perClub = {};
+    var maxCopies = 0;
+    Object.keys(e.coleccio).forEach(function (id) {
+      var c = perId[id];
+      if (!c) return;
+      tinc[c.raresa] += 1;
+      perClub[c.club] = (perClub[c.club] || 0) + 1;
+      maxCopies = Math.max(maxCopies, e.coleccio[id]);
+    });
+    var totalClub = {};
+    CARTES_JOC.forEach(function (c) { totalClub[c.club] = (totalClub[c.club] || 0) + 1; });
+    var v = valorEquip();
+    var ids = Object.keys(s.onze).map(function (k) { return s.onze[k]; }).filter(Boolean);
+    var linies = {};
+    Object.keys(s.onze).forEach(function (k) { if (s.onze[k]) (linies[posDe(k)] = linies[posDe(k)] || []).push(s.onze[k]); });
+    var muralla = ORDRE_POS.some(function (pos) {
+      var n = FORMACIONS[s.formacio][pos];
+      var l = linies[pos] || [];
+      return n > 1 && l.length === n && l.every(function (id) { var r = perId[id].raresa; return r === "or" || r === "llegenda"; });
+    });
+    var clubsOnze = {};
+    ids.forEach(function (id) { clubsOnze[perId[id].club] = true; });
+    return {
+      sobres: e.sobres, primera: primera, oberts: oberts, tinc: tinc,
+      diferents: Object.keys(e.coleccio).length,
+      cromos: e.sobres * C.cartesPerSobre,
+      clubsAmb: Object.keys(perClub).length,
+      clubsComplets: CLUBS.filter(function (k) { return perClub[k] === totalClub[k]; }).length,
+      perClub: perClub, totalClub: totalClub, maxCopies: maxCopies,
+      onzeN: v.n, valorOnze: v.mitjana,
+      muralla: muralla,
+      unClub: v.n === MIDA_EQUIP && Object.keys(clubsOnze).length === 1,
+    };
+  }
+
+  function resumPartida() {
+    var x = estadistiques();
+    return { diferents: x.diferents, llegendes: x.tinc.llegenda, valorOnze: Math.round(x.valorOnze * 10) / 10 };
+  }
+
+  // Comprova fites noves i les anuncia.
+  function revisaFites() {
+    if (!s.estat) return;
+    var x = estadistiques();
+    FITES.forEach(function (f) {
+      if (f.fet(x) && s.fitesVistes.indexOf(f.id) < 0) {
+        s.fitesVistes.push(f.id);
+        avisa("Fita aconseguida: " + f.nom, "es-fita");
+      }
+    });
+  }
+
+  function avisa(text, tipus) {
+    var zona = document.getElementById("avisos");
+    if (!zona) return;
+    var el = document.createElement("div");
+    el.className = "avis-flotant " + (tipus || "");
+    el.setAttribute("role", "status");
+    el.textContent = text;
+    zona.appendChild(el);
+    setTimeout(function () { el.classList.add("marxa"); }, 3600);
+    setTimeout(function () { el.remove(); }, 4200);
+  }
+
+  /* ---- Peces ---------------------------------------------------------- */
+  function cromo(carta, o) {
+    o = o || {};
+    var club = CLUBS_JOC[carta.club];
+    var marca = o.nova ? '<span class="cromo-marca">Nova</span>' : "";
+    var peu = NOM_RARESA[carta.raresa] + (o.tens ? ". " + textCopies(o.tens) : "");
+    var etiqueta = o.boto ? "button" : "article";
+    var attrs = o.boto ? ' type="button" data-detall="' + carta.id + '" aria-label="' + esc(carta.nom) + ', obre la fitxa"' : "";
+    return "<" + etiqueta + ' class="cromo ' + carta.raresa + '" style="' + colorsClub(carta) + '"' + attrs + ">" +
+      '<span class="cromo-franja"><span>' + esc(club.curt) + "</span><span>" + carta.num + "</span></span>" + marca +
+      '<span class="cromo-imatge"><span class="cromo-valor">' + carta.valor + '</span><span class="cromo-posicio">' + POSICIONS_JOC[carta.pos] + "</span></span>" +
+      '<span class="cromo-peu"><span class="cromo-nom">' + esc(carta.nom) + '</span><span class="cromo-copies">' + peu + "</span></span></" + etiqueta + ">";
+  }
+
+  function fitxa(carta, atributs, classes, mostraCopies) {
+    var n = s.estat.coleccio[carta.id];
+    return '<button type="button" class="fitxa ' + carta.raresa + " " + (classes || "") + '" style="' + colorsClub(carta) + '" ' + atributs + ">" +
+      '<span class="fitxa-club">' + esc(CLUBS_JOC[carta.club].curt) + "</span>" +
+      '<span class="fitxa-cos"><span class="v">' + carta.valor + '</span><span class="n">' + esc(carta.nom) + "</span>" +
+      (mostraCopies ? '<span class="x">' + plural(n, "còpia", "còpies") + "</span>" : "") + "</span></button>";
+  }
+
+  function paquet() {
+    return '<div class="paquet" id="paquet"><span class="t1">' + esc(C.nom) + '</span><span class="t2">' + C.temporada + '</span><span class="t3">' + plural(C.cartesPerSobre, "cromo", "cromos") + "</span></div>";
+  }
+
+  /* ---- Entrada -------------------------------------------------------- */
+  function vistaEntrada() {
+    // Tres cromos de mostra: els de més valor de tres grups diferents.
+    var vistos = {};
+    var mostra = CARTES_JOC.slice().sort(function (a, b) { return b.valor - a.valor; })
+      .filter(function (c) { if (vistos[c.club]) return false; vistos[c.club] = true; return true; }).slice(0, 3);
+    return '<main class="pagina entrada"><div>' +
+      "<h1>" + esc(C.nom) + "</h1>" +
+      '<p class="sub">' + esc(C.descripcio.replace("{cromos}", CARTES_JOC.length).replace("{grups}", CLUBS.length)) + "</p>" +
+      '<form class="formulari" id="form-entrada" novalidate>' +
+      (s.error ? '<p class="error" role="alert">' + esc(s.error) + "</p>" : "") +
+      '<div class="camp"><label for="codi">El teu codi</label><input id="codi" autocomplete="off" autocapitalize="characters" maxlength="12" placeholder="SK42"' + (s.carregant ? " disabled" : "") + '><span class="ajuda">És el codi que t\'ha donat el professor. Amb aquest mateix codi recuperes la partida des de qualsevol ordinador.</span></div>' +
+      '<div><button class="boto" type="submit"' + (s.carregant ? " disabled" : "") + ">" + (s.carregant ? "Entrant…" : "Entra al joc") + "</button></div>" +
+      "</form></div>" +
+      '<div class="mostra" aria-label="Tres cromos de mostra">' + mostra.map(function (c) { return cromo(c); }).join("") + "</div></main>";
+  }
+
+  /* ---- Capçalera i peu ------------------------------------------------ */
+  function capcalera() {
+    var e = s.estat;
+    var x = estadistiques();
+    var pest = [["sobres", "Sobres"], ["album", "Àlbum"], ["onze", "El meu onze"], ["fites", "Fites"]];
+    if (s.laboratori) pest.push(["lab", "Laboratori"]);
+    if (Servidor.actiu) pest.push(["classe", "Classe"]);
+    var htmlPest = pest.map(function (p) {
+      return '<button type="button" class="pestanya" data-vista="' + p[0] + '"' + (s.vista === p[0] ? ' aria-current="page"' : "") + ">" + p[1] + "</button>";
+    }).join("");
+    return '<header class="cap"><div class="marca">' + esc(C.nom) + '</div>' + (s.nom ? '<div class="qui">' + esc(s.nom) + "</div>" : "") + '<div class="comptadors">' +
+      "<span><b>" + e.gemmes + "</b>" + (e.gemmes === 1 ? "gemma" : "gemmes") + "</span>" +
+      "<span><b>" + x.diferents + "/" + CARTES_JOC.length + "</b>cromos</span>" +
+      '<span id="sincro" class="sincro ' + s.sincro + '">' + textSincro() + "</span>" +
+      '</div><nav class="pestanyes" aria-label="Seccions">' + htmlPest + "</nav></header>";
+  }
+
+  function peu() {
+    var reiniciar = "";
+    if (!Servidor.actiu && C.permetReiniciar) {
+      reiniciar = s.confirma
+        ? '<button type="button" class="boto-discret perill" data-accio="reinicia-si">Esborra la partida de ' + esc(s.codi) + '</button><button type="button" class="boto-discret" data-accio="reinicia-no">Cancel·la</button>'
+        : '<button type="button" class="boto-discret" data-accio="reinicia">Torna a començar</button>';
+    }
+    return '<footer class="peu"><p>Jugues com a <b>' + esc(s.nom || s.codi) + "</b>" + (s.nom ? " (" + esc(s.codi) + ")" : "") + ".</p>" +
+      '<button type="button" class="boto-discret" data-accio="surt">Surt</button>' + reiniciar + "</footer>";
+  }
+
+  /* ---- Sobres --------------------------------------------------------- */
+  function botonsObrir() {
+    var g = Math.floor(s.estat.gemmes / C.preuSobre);
+    var h = '<div class="accions"><button type="button" class="boto" data-accio="obre" data-n="1" data-bloq>Obre 1 sobre</button>';
+    if (g >= 5) h += '<button type="button" class="boto segon" data-accio="obre" data-n="5" data-bloq>Obre 5 sobres</button>';
+    else if (g > 1) h += '<button type="button" class="boto segon" data-accio="obre" data-n="' + g + '" data-bloq>Obre els ' + g + " que queden</button>";
+    return h + "</div>";
+  }
+
+  function vistaSobres() {
+    var acabat = s.estat.gemmes < C.preuSobre;
+    var h = '<main class="pagina taula">';
+    if (s.darrer) {
+      h += '<div class="fila-cromos' + (s.darrer.sobres > 1 ? " multi" : "") + '" id="fila">' + s.darrer.cartes.map(function (r, i) {
+        return '<div class="volta"><div class="volta-interior' + (s.darrer.vist ? " girada" : "") + '" data-i="' + i + '"><div class="cara">' +
+          cromo(r.carta, { nova: r.nova, tens: r.tens }) + '</div><div class="dors"></div></div></div>';
+      }).join("") + "</div>";
+      h += '<p class="frase" id="frase" aria-live="polite">' + (s.darrer.vist ? fraseSobre(s.darrer.cartes) : "") + "</p>";
+      if (!acabat) h += botonsObrir();
+    } else if (!acabat) {
+      h += '<button type="button" class="sobre-gran" data-accio="obre" data-n="1" aria-label="Obre un sobre per 1 gemma">' + paquet() + "</button>" + botonsObrir() +
+        '<p class="ajuda-sobre">Tens ' + plural(s.estat.gemmes, "gemma", "gemmes") + ". Cada sobre costa " + plural(C.preuSobre, "gemma", "gemmes") + " i porta " + plural(C.cartesPerSobre, "cromo", "cromos") + ".</p>";
+    }
+    if (acabat) h += vistaFinal();
+    return h + "</main>";
+  }
+
+  function fraseSobre(cartes) {
+    var noves = cartes.filter(function (c) { return c.nova; }).length;
+    var rares = cartes.filter(function (c) { return c.carta.raresa === "or" || c.carta.raresa === "llegenda"; }).length;
+    return plural(noves, "cromo nou", "cromos nous") + " i " + plural(cartes.length - noves, "repetit", "repetits") +
+      (rares ? ". " + (rares === 1 ? "Un cromo especial!" : rares + " cromos especials!") : ".");
+  }
+
+  function textResultat() {
+    var x = estadistiques();
+    return [s.codi, "sobres=" + s.estat.sobres, "primera_llegenda=" + (x.primera || "cap"), "diferents=" + x.diferents,
+      "bronze=" + x.oberts.bronze, "plata=" + x.oberts.plata, "or=" + x.oberts.or, "llegenda=" + x.oberts.llegenda].join(";");
+  }
+
+  function vistaFinal() {
+    var x = estadistiques();
+    var fet = x.primera ? "La primera llegenda et va sortir al sobre " + x.primera + "." : "En " + plural(s.estat.sobres, "sobre", "sobres") + " no t'ha sortit cap llegenda.";
+    var h = '<section class="final"><h2>Se t\'han acabat les gemmes</h2><p>Has obert ' + plural(s.estat.sobres, "sobre", "sobres") + ". " + fet + "</p>" +
+      '<div class="xifres"><div><b>' + x.oberts.llegenda + "</b><span>" + (x.oberts.llegenda === 1 ? "llegenda" : "llegendes") + "</span></div>" +
+      "<div><b>" + x.oberts.or + "</b><span>d'or</span></div><div><b>" + x.oberts.plata + "</b><span>de plata</span></div><div><b>" + x.oberts.bronze + "</b><span>de bronze</span></div>" +
+      "<div><b>" + x.diferents + "</b><span>de " + CARTES_JOC.length + " cromos</span></div></div>";
+    if (Servidor.actiu) {
+      h += "<p>Tots els teus sobres queden registrats al full del professor. Quan comenci una sessió nova rebràs més gemmes.</p>" +
+        '<button type="button" class="boto-discret" data-accio="refresca">Comprova si tens gemmes noves</button>';
+    } else {
+      h += '<label for="codi-resultat">Copia aquest resultat al full de la classe:</label>' +
+        '<input class="codi-resultat" id="codi-resultat" readonly value="' + esc(textResultat()) + '">' +
+        '<button type="button" class="boto-discret" data-accio="copia">Copia el resultat</button>';
+    }
+    return h + "</section>";
+  }
+
+  /* ---- Àlbum ---------------------------------------------------------- */
+  function vistaAlbum() {
+    var e = s.estat;
+    var x = estadistiques();
+    var f = s.filtre;
+    var total = Object.keys(e.coleccio).reduce(function (t, id) { return t + e.coleccio[id]; }, 0);
+    var h = '<main class="pagina"><h1 class="titol-seccio">Àlbum</h1>' +
+      '<p class="resum-album">Tens ' + plural(total, "cromo", "cromos") + ": " + x.diferents + " de diferents i " + plural(total - x.diferents, "còpia repetida", "còpies repetides") + ".</p>" +
+      '<div class="rareses">' + RARESES.map(function (r) {
+        return '<span class="raresa-xip ' + r + '"><b>' + x.tinc[r] + "/" + TOTAL_RARESA[r] + "</b> " + NOM_RARESA[r] + "</span>";
+      }).join("") + "</div>" +
+      '<div class="filtres">' +
+      '<div class="camp-petit"><label for="f-club">Club</label><select id="f-club" data-filtre="club"><option value="tots">Tots els clubs</option>' +
+      CLUBS.map(function (k) { return '<option value="' + k + '"' + (f.club === k ? " selected" : "") + ">" + esc(CLUBS_JOC[k].nom) + "</option>"; }).join("") + "</select></div>" +
+      '<div class="camp-petit"><label for="f-raresa">Raresa</label><select id="f-raresa" data-filtre="raresa"><option value="totes">Totes</option>' +
+      RARESES.map(function (r) { return '<option value="' + r + '"' + (f.raresa === r ? " selected" : "") + ">" + NOM_RARESA[r] + "</option>"; }).join("") + "</select></div>" +
+      '<div class="camp-petit"><label for="f-mostra">Mostra</label><select id="f-mostra" data-filtre="mostra">' +
+      [["tots", "Tots"], ["tinc", "Els que tinc"], ["falten", "Els que em falten"], ["repetits", "Els repetits"]].map(function (o) {
+        return '<option value="' + o[0] + '"' + (f.mostra === o[0] ? " selected" : "") + ">" + o[1] + "</option>";
+      }).join("") + "</select></div></div>";
+
+    var algun = false;
+    CLUBS.forEach(function (k) {
+      if (f.club !== "tots" && f.club !== k) return;
+      var cartes = CARTES_JOC.filter(function (c) {
+        if (c.club !== k) return false;
+        if (f.raresa !== "totes" && c.raresa !== f.raresa) return false;
+        var n = e.coleccio[c.id] || 0;
+        if (f.mostra === "tinc") return n > 0;
+        if (f.mostra === "falten") return n === 0;
+        if (f.mostra === "repetits") return n > 1;
+        return true;
+      });
+      if (!cartes.length) return;
+      algun = true;
+      var tens = x.perClub[k] || 0;
+      var tot = x.totalClub[k];
+      h += '<section class="club" style="' + colorsClub({ club: k }) + '"><div class="club-cap"><h2>' + esc(CLUBS_JOC[k].nom) + "</h2>" +
+        '<span class="progres" role="img" aria-label="' + tens + " de " + tot + '"><span style="width:' + (tens / tot * 100).toFixed(1) + '%"></span></span><span>' + tens + " de " + tot + "</span></div>" +
+        '<div class="reixa">' + cartes.map(function (c) {
+          var n = e.coleccio[c.id];
+          return n ? cromo(c, { tens: n, boto: true }) :
+            '<div class="buit"><span class="num">' + c.num + '</span><span><span class="nom">' + esc(c.nom) + '</span><span class="pos">' + POSICIONS_JOC[c.pos] + "</span></span></div>";
+        }).join("") + "</div></section>";
+    });
+    if (!algun) h += '<p class="buit-filtre">Cap cromo coincideix amb aquests filtres.</p>';
+    return h + "</main>";
+  }
+
+  function vistaDetall() {
+    var c = perId[s.detall];
+    if (!c) return "";
+    var n = s.estat.coleccio[c.id] || 0;
+    var alOnze = Object.keys(s.onze).some(function (k) { return s.onze[k] === c.id; });
+    return '<div class="velo" data-accio="tanca-detall"></div><div class="detall" role="dialog" aria-modal="true" aria-labelledby="detall-nom">' +
+      '<div class="detall-cromo">' + cromo(c, { tens: n }) + "</div>" +
+      '<div class="detall-info"><h2 id="detall-nom">' + esc(c.nom) + "</h2>" +
+      "<dl><dt>Club</dt><dd>" + esc(CLUBS_JOC[c.club].nom) + "</dd><dt>Posició</dt><dd>" + POSICIONS_JOC[c.pos] + "</dd>" +
+      "<dt>Dorsal</dt><dd>" + c.dorsal + "</dd><dt>Valor</dt><dd>" + c.valor + "</dd><dt>Raresa</dt><dd>" + NOM_RARESA[c.raresa] + "</dd>" +
+      "<dt>Còpies</dt><dd>" + n + "</dd><dt>Al teu onze</dt><dd>" + (alOnze ? "Sí" : "No") + "</dd></dl>" +
+      '<div class="accions" style="justify-content:flex-start">' +
+      (alOnze ? "" : '<button type="button" class="boto" data-accio="al-onze" data-id="' + c.id + '">Posa-la al meu onze</button>') +
+      '<button type="button" class="boto-discret" data-accio="tanca-detall" id="tanca-detall">Tanca</button></div></div></div>';
+  }
+
+  /* ---- Onze ----------------------------------------------------------- */
+  function posicioActiva() {
+    if (s.lloc) return posDe(s.lloc);
+    if (s.suplent) return perId[s.suplent].pos;
+    return null;
+  }
+
+  function vistaOnze() {
+    var v = valorEquip();
+    var activa = posicioActiva();
+    var h = '<main class="pagina"><h1 class="titol-seccio">El meu onze</h1>' +
+      '<div class="formacions" role="group" aria-label="Formació">' + Object.keys(FORMACIONS).map(function (f) {
+        return '<button type="button" class="xip-formacio" data-formacio="' + f + '" aria-pressed="' + (s.formacio === f) + '">' + f + "</button>";
+      }).join("") + "</div>" +
+      '<div class="onze-disposicio"><div class="columna-camp"><div class="camp-futbol" id="camp-futbol">';
+    llocsFormacio().forEach(function (linia) {
+      h += '<div class="linia">';
+      linia.forEach(function (clau) {
+        var pos = posDe(clau);
+        var id = s.onze[clau];
+        var apagada = activa && activa !== pos ? "apagada" : "";
+        var premut = s.lloc === clau;
+        h += '<div class="lloc">' + (id
+          ? fitxa(perId[id], 'data-lloc="' + clau + '" aria-pressed="' + premut + '"', apagada)
+          : '<button type="button" class="lloc-buit ' + apagada + '" data-lloc="' + clau + '" aria-pressed="' + premut + '">' + POSICIONS_JOC[pos] + "</button>") + "</div>";
+      });
+      h += "</div>";
+    });
+    h += '</div><div class="llegenda-colors" aria-label="Color de la qualitat">' +
+      RARESES.slice().reverse().map(function (r) { return '<span><i class="punt ' + r + '"></i>' + NOM_RARESA[r] + "</span>"; }).join("") + "</div></div>" +
+      '<div class="panell"><div class="valor-equip"><b>' + (v.n ? coma(v.mitjana.toFixed(1)) : "0") + "</b><span>valor de l'equip, " + v.n + " de " + MIDA_EQUIP + " places</span></div>" +
+      '<div class="accions" style="justify-content:flex-start"><button type="button" class="boto" data-accio="millor">Posa les millors</button>' +
+      (s.lloc && s.onze[s.lloc] ? '<button type="button" class="boto-discret" data-accio="treu">Envia-la a la banqueta</button>' : "") + "</div>" +
+      vistaBanqueta(activa) + "</div></div></main>";
+    return h;
+  }
+
+  function vistaBanqueta(activa) {
+    var alCamp = {};
+    Object.keys(s.onze).forEach(function (k) { if (s.onze[k]) alCamp[s.onze[k]] = true; });
+    var ajuda = s.lloc ? "Tria qui entra al camp." : s.suplent ? "Toca la posició del camp on ha de jugar." : "Toca una suplent i després una posició del camp, o al revés, per fer el canvi.";
+    var h = "<h2>Suplents</h2><p>" + ajuda + "</p>";
+    var algun = false;
+    ORDRE_POS.forEach(function (pos) {
+      if (activa && activa !== pos) return;
+      var cand = CARTES_JOC.filter(function (c) { return c.pos === pos && s.estat.coleccio[c.id] && !alCamp[c.id]; })
+        .sort(function (a, b) { return b.valor - a.valor; });
+      if (!cand.length) return;
+      algun = true;
+      h += '<div class="grup-banqueta"><h3>' + PLURAL_POS[pos] + '</h3><div class="banqueta">' + cand.map(function (c) {
+        return fitxa(c, 'data-suplent="' + c.id + '" aria-pressed="' + (s.suplent === c.id) + '"', "", true);
+      }).join("") + "</div></div>";
+    });
+    if (!algun) h += "<p>No tens cap suplent " + (activa ? "per a aquesta posició" : "encara") + ". Obre més sobres per aconseguir-ne.</p>";
+    return h;
+  }
+
+  /* ---- Fites ---------------------------------------------------------- */
+  function vistaFites() {
+    var x = estadistiques();
+    var fetes = FITES.filter(function (f) { return f.fet(x); }).length;
+    return '<main class="pagina"><h1 class="titol-seccio">Fites</h1><p>Has aconseguit ' + fetes + " de " + FITES.length + '.</p><div class="fites">' +
+      FITES.map(function (f) {
+        var fet = f.fet(x);
+        return '<div class="fita' + (fet ? " feta" : "") + '"><span class="medalla" aria-hidden="true"></span><span><b>' + esc(f.nom) + "</b><span>" + esc(f.desc) + "</span></span>" +
+          '<span class="estat-fita">' + (fet ? "Aconseguida" : "Pendent") + "</span></div>";
+      }).join("") + "</div></main>";
+  }
+
+  /* ---- Classe --------------------------------------------------------- */
+  function vistaClasse() {
+    var h = '<main class="pagina"><h1 class="titol-seccio">Classe</h1>';
+    if (!s.classe) return h + '<p>Carregant la classificació…</p></main>';
+    if (s.classe.error) return h + '<p class="error">' + esc(s.classe.error) + '</p><button type="button" class="boto-discret" data-accio="classe">Torna-ho a provar</button></main>';
+    var ordre = s.ordreClasse;
+    var files = s.classe.files.slice().sort(function (a, b) { return (b[ordre] || 0) - (a[ordre] || 0); });
+    var cols = [["valorOnze", "Valor de l'onze"], ["diferents", "Cromos diferents"], ["llegendes", "Llegendes"], ["sobres", "Sobres"]];
+    h += '<div class="formacions" role="group" aria-label="Ordena per">' + cols.map(function (c) {
+      return '<button type="button" class="xip-formacio" data-ordre="' + c[0] + '" aria-pressed="' + (ordre === c[0]) + '">' + c[1] + "</button>";
+    }).join("") + '<button type="button" class="boto-discret" data-accio="classe">Actualitza</button></div>';
+    if (!files.length) return h + "<p>Encara no ha jugat ningú.</p></main>";
+    h += '<div class="taula-classe"><table><thead><tr><th scope="col">#</th><th scope="col">Codi</th>' +
+      cols.map(function (c) { return '<th scope="col" class="n">' + c[1] + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      files.map(function (f, i) {
+        return "<tr" + (f.codi === s.codi ? ' class="jo"' : "") + "><td>" + (i + 1) + "</td><td>" + esc(f.codi) + (f.codi === s.codi ? " (tu)" : "") + "</td>" +
+          '<td class="n">' + coma(Number(f.valorOnze || 0).toFixed(1)) + '</td><td class="n">' + (f.diferents || 0) + '</td><td class="n">' + (f.llegendes || 0) + '</td><td class="n">' + (f.sobres || 0) + "</td></tr>";
+      }).join("") + "</tbody></table></div>";
+    return h + "</main>";
+  }
+
+  function carregaClasse() {
+    s.classe = null;
+    pinta();
+    Servidor.classe().then(function (d) { s.classe = { files: d.files || [] }; })
+      .catch(function (e) { s.classe = { error: "No s'ha pogut carregar la classificació. " + e.message }; })
+      .then(function () { if (s.vista === "classe") pinta(); });
+  }
+
+  /* ---- Pintar --------------------------------------------------------- */
+  function pinta() {
+    temporitzadors.forEach(clearTimeout);
+    temporitzadors = [];
+    if (s.darrer && !s.darrer.vist && s.vista !== "sobres") s.darrer.vist = true;
+    var avisos = '<div class="avisos" id="avisos" aria-live="polite"></div><div class="esclat" id="esclat" aria-hidden="true"><span>Llegenda</span></div>';
+    if (!s.estat) { app.innerHTML = vistaEntrada() + avisos; return; }
+    var vistes = { album: vistaAlbum, onze: vistaOnze, fites: vistaFites, classe: vistaClasse, sobres: vistaSobres, lab: Lab.vista };
+    var cos = (vistes[s.vista] || vistaSobres)();
+    app.innerHTML = capcalera() + cos.replace(/<\/main>\s*$/, peu() + "</main>") + (s.detall ? vistaDetall() : "") + avisos;
+    if (s.detall) { var t = document.getElementById("tanca-detall"); if (t) t.focus(); }
+    if (s.vista === "sobres" && s.darrer && !s.darrer.vist) revela();
+  }
+
+  function bloqueja(si) {
+    app.querySelectorAll("[data-bloq]").forEach(function (b) { b.disabled = si; });
+  }
+
+  function esclata(raresa) {
+    var el = document.getElementById("esclat");
+    if (!el || LENT) return;
+    el.className = "esclat " + raresa;
+    el.querySelector("span").textContent = raresa === "llegenda" ? "Llegenda" : "Or";
+    void el.offsetWidth;
+    el.classList.add("actiu");
+  }
+
+  // Gira els cromos d'un en un. Les cartes més rares es fan esperar una mica.
+  function revela() {
+    bloqueja(true);
+    var cartes = s.darrer.cartes;
+    var multi = s.darrer.sobres > 1;
+    var extra = multi ? { bronze: 0, plata: 0, or: 160, llegenda: 700 } : { bronze: 0, plata: 100, or: 500, llegenda: 1100 };
+    var pas = multi ? 90 : 320;
+    var t = LENT ? 0 : 200;
+    cartes.forEach(function (r, i) {
+      if (!LENT) t += pas + extra[r.carta.raresa];
+      temporitzadors.push(setTimeout(function () {
+        var el = app.querySelector('.volta-interior[data-i="' + i + '"]');
+        if (!el) return;
+        el.classList.add("girada");
+        if (r.carta.raresa === "llegenda" || r.carta.raresa === "or") {
+          el.classList.add("brilla");
+          esclata(r.carta.raresa);
+        }
+      }, t));
+      if (!LENT && (r.carta.raresa === "llegenda")) t += 900;
+    });
+    temporitzadors.push(setTimeout(function () {
+      s.darrer.vist = true;
+      var fr = document.getElementById("frase");
+      if (fr) fr.textContent = fraseSobre(cartes);
+      bloqueja(false);
+      revisaFites();
+    }, t + (LENT ? 0 : 420)));
+  }
+
+  function obre(n) {
+    if (s.darrer && !s.darrer.vist) return;
+    actualitzaGemmes();
+    var cartes = [];
+    var oberts = 0;
+    for (var i = 0; i < n; i++) {
+      var res = Motor.obreSobre(s.estat, bossa, C, atzar);
+      if (!res) break;
+      cartes = cartes.concat(res);
+      oberts += 1;
+      Servidor.afegeixPendent(s.codi, {
+        num: s.estat.sobres,
+        cartes: res.map(function (r) { return r.carta.id; }),
+        rareses: res.map(function (r) { return r.carta.raresa; }),
+      });
+    }
+    if (!oberts) return;
+    sincronitza();
+    var p = document.getElementById("paquet");
+    var mostra = function () { s.darrer = { cartes: cartes, sobres: oberts, vist: false }; pinta(); };
+    if (p && !LENT) {
+      p.classList.add("obrint");
+      setTimeout(mostra, 400);
+    } else mostra();
+  }
+
+  /* ---- Onze: accions -------------------------------------------------- */
+  function canviOnze() {
+    desaLocal();
+    revisaFites();
+    clearTimeout(esperaOnze);
+    esperaOnze = setTimeout(sincronitza, 1500);
+  }
+
+  function posaMillors() {
+    var usades = {};
+    s.onze = {};
+    llocsFormacio().forEach(function (linia) {
+      linia.forEach(function (clau) {
+        var pos = posDe(clau);
+        var millor = CARTES_JOC.filter(function (c) { return c.pos === pos && s.estat.coleccio[c.id] && !usades[c.id]; })
+          .sort(function (a, b) { return b.valor - a.valor; })[0];
+        if (millor) { usades[millor.id] = true; s.onze[clau] = millor.id; }
+      });
+    });
+    s.lloc = null;
+    s.suplent = null;
+    canviOnze();
+    pinta();
+  }
+
+  // En canviar de formació, cada posició conserva les seves millors jugadores.
+  function canviaFormacio(f) {
+    var perPos = {};
+    ORDRE_POS.forEach(function (pos) { perPos[pos] = []; });
+    Object.keys(s.onze).forEach(function (k) { if (s.onze[k]) perPos[posDe(k)].push(s.onze[k]); });
+    s.formacio = f;
+    s.onze = {};
+    ORDRE_POS.forEach(function (pos) {
+      perPos[pos].sort(function (a, b) { return perId[b].valor - perId[a].valor; });
+      for (var i = 0; i < FORMACIONS[f][pos] && i < perPos[pos].length; i++) s.onze[pos + ":" + i] = perPos[pos][i];
+    });
+    // Les places noves s'omplen amb les millors suplents.
+    var usades = {};
+    Object.keys(s.onze).forEach(function (k) { usades[s.onze[k]] = true; });
+    llocsFormacio().forEach(function (linia) {
+      linia.forEach(function (clau) {
+        if (s.onze[clau]) return;
+        var pos = posDe(clau);
+        var millor = CARTES_JOC.filter(function (c) { return c.pos === pos && s.estat.coleccio[c.id] && !usades[c.id]; })
+          .sort(function (a, b) { return b.valor - a.valor; })[0];
+        if (millor) { usades[millor.id] = true; s.onze[clau] = millor.id; }
+      });
+    });
+    s.lloc = null;
+    s.suplent = null;
+    canviOnze();
+    pinta();
+  }
+
+  function tocaLloc(clau) {
+    var pos = posDe(clau);
+    if (s.suplent && perId[s.suplent].pos === pos) {
+      s.onze[clau] = s.suplent;
+      s.suplent = null;
+      canviOnze();
+    } else if (s.lloc && s.lloc !== clau && posDe(s.lloc) === pos) {
+      var a = s.onze[s.lloc];
+      var b = s.onze[clau];
+      if (b) s.onze[s.lloc] = b; else delete s.onze[s.lloc];
+      if (a) s.onze[clau] = a; else delete s.onze[clau];
+      s.lloc = null;
+      canviOnze();
+    } else {
+      s.suplent = null;
+      s.lloc = s.lloc === clau ? null : clau;
+    }
+    pinta();
+  }
+
+  function tocaSuplent(id) {
+    if (s.lloc && posDe(s.lloc) === perId[id].pos) {
+      s.onze[s.lloc] = id;
+      s.lloc = null;
+      canviOnze();
+      pinta();
+      return;
+    }
+    s.lloc = null;
+    s.suplent = s.suplent === id ? null : id;
+    pinta();
+    var camp = document.getElementById("camp-futbol");
+    if (s.suplent && camp && innerWidth <= 820) camp.scrollIntoView({ block: "center", behavior: LENT ? "auto" : "smooth" });
+  }
+
+  // Netegem l'onze si conté claus d'una versió anterior.
+  function normalitzaOnze() {
+    var valides = {};
+    llocsFormacio().forEach(function (l) { l.forEach(function (k) { valides[k] = true; }); });
+    var net = {};
+    Object.keys(s.onze || {}).forEach(function (k) {
+      var id = s.onze[k];
+      if (valides[k] && perId[id] && s.estat.coleccio[id] && perId[id].pos === posDe(k)) net[k] = id;
+    });
+    s.onze = net;
+  }
+
+  /* ---- Entrar i sortir ------------------------------------------------ */
+  function comenca(codi, dades) {
+    var local = carregaLocal(codi);
+    var p = dades.partida;
+    // Si al navegador hi ha sobres que encara no han arribat al full, mana el navegador.
+    if (local && Servidor.hiHaPendents(codi) && (!p || local.estat.sobres > p.estat.sobres)) p = local;
+    if (!Servidor.actiu) p = local;
+    s.codi = codi;
+    s.atorgades = dades.atorgades;
+    s.nom = dades.nom || "";
+    s.laboratori = Servidor.actiu ? !!dades.laboratori : !!C.laboratoriLocal;
+    Lab.inicia(codi, pinta);
+    s.estat = p ? p.estat : Motor.estatInicial(C);
+    s.onze = p && p.onze || {};
+    s.formacio = p && FORMACIONS[p.formacio] ? p.formacio : Object.keys(FORMACIONS)[0];
+    s.fitesVistes = p && p.fitesVistes || [];
+    actualitzaGemmes();
+    normalitzaOnze();
+    s.vista = "sobres";
+    s.darrer = null;
+    s.carregant = false;
+    s.error = "";
+    desaLocal();
+    pinta();
+    if (Servidor.actiu && Servidor.hiHaPendents(codi)) sincronitza();
+    window.scrollTo(0, 0);
+  }
+
+  function entra(codi) {
+    s.carregant = true;
+    s.error = "";
+    pinta();
+    Servidor.entra(codi).then(function (d) { comenca(codi, d); }).catch(function (e) {
+      s.carregant = false;
+      s.error = e.delServidor ? e.message : "No s'ha pogut connectar amb el servidor. Comprova la connexió i torna-ho a provar.";
+      pinta();
+      var camp = document.getElementById("codi");
+      if (camp) camp.value = codi;
+    });
+  }
+
+  function surt() {
+    s.codi = null; s.estat = null; s.darrer = null; s.confirma = false; s.detall = null; s.classe = null;
+    esborra(CLAU + "darrer");
+    pinta();
+  }
+
+  /* ---- Esdeveniments -------------------------------------------------- */
+  app.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var codi = document.getElementById("codi").value.trim().toUpperCase();
+    if (!/^[A-Z0-9][A-Z0-9-]{1,11}$/.test(codi)) {
+      s.error = "Escriu el teu codi amb lletres, números i guions, sense espais.";
+      pinta();
+      document.getElementById("codi").value = codi;
+      return;
+    }
+    entra(codi);
+  });
+
+  app.addEventListener("change", function (ev) {
+    if (ev.target.dataset && Lab.canvi(ev.target, false)) return;
+    var f = ev.target.dataset && ev.target.dataset.filtre;
+    if (!f) return;
+    s.filtre[f] = ev.target.value;
+    pinta();
+    var el = document.getElementById(ev.target.id);
+    if (el) el.focus();
+  });
+
+  app.addEventListener("input", function (ev) {
+    if (ev.target.type === "range" && Lab.canvi(ev.target, true)) {
+      var id = ev.target.id;
+      var el = document.getElementById(id);
+      if (el) el.focus();
+    }
+  });
+
+  app.addEventListener("click", function (ev) {
+    var b = ev.target.closest("button, .velo");
+    if (!b) return;
+    var d = b.dataset;
+    if (Lab.clic(b)) return;
+    if (d.vista) {
+      s.vista = d.vista; s.confirma = false; s.lloc = null; s.suplent = null;
+      if (d.vista === "classe") { carregaClasse(); } else pinta();
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (d.lloc) { tocaLloc(d.lloc); return; }
+    if (d.suplent) { tocaSuplent(d.suplent); return; }
+    if (d.formacio) { canviaFormacio(d.formacio); return; }
+    if (d.detall) { s.detall = d.detall; pinta(); return; }
+    if (d.ordre) { s.ordreClasse = d.ordre; pinta(); return; }
+    var a = d.accio;
+    if (a === "obre") obre(parseInt(d.n, 10) || 1);
+    else if (a === "millor") posaMillors();
+    else if (a === "treu") { delete s.onze[s.lloc]; s.lloc = null; canviOnze(); pinta(); }
+    else if (a === "tanca-detall") { var id = s.detall; s.detall = null; pinta(); var torna = app.querySelector('[data-detall="' + id + '"]'); if (torna) torna.focus(); }
+    else if (a === "al-onze") { s.detall = null; s.vista = "onze"; s.lloc = null; s.suplent = d.id; pinta(); window.scrollTo(0, 0); }
+    else if (a === "classe") carregaClasse();
+    else if (a === "surt") surt();
+    else if (a === "refresca") {
+      b.disabled = true; b.textContent = "Comprovant…";
+      Servidor.entra(s.codi).then(function (r) {
+        var abans = s.atorgades;
+        s.atorgades = r.atorgades; s.laboratori = !!r.laboratori; actualitzaGemmes(); pinta();
+        avisa(r.atorgades > abans ? "Tens " + plural(r.atorgades - abans, "gemma nova", "gemmes noves") + "." : "Encara no hi ha gemmes noves.");
+      }).catch(function () { pinta(); avisa("No s'ha pogut connectar amb el servidor."); });
+    }
+    else if (a === "reinicia") { s.confirma = true; pinta(); }
+    else if (a === "reinicia-no") { s.confirma = false; pinta(); }
+    else if (a === "reinicia-si") { esborra(CLAU + s.codi); surt(); }
+    else if (a === "copia") {
+      var camp = document.getElementById("codi-resultat");
+      var fet = function () { b.textContent = "Resultat copiat"; };
+      var manual = function () { camp.focus(); camp.select(); b.textContent = "Selecciona'l i copia'l a mà"; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(camp.value).then(fet, manual);
+      else manual();
+    }
+  });
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape" && s.detall) { s.detall = null; pinta(); }
+  });
+
+  /* ---- Arrencada ------------------------------------------------------ */
+  var darrer = llegeix(CLAU + "darrer");
+  if (darrer && (Servidor.actiu || carregaLocal(darrer))) entra(darrer);
+  else pinta();
+})();
+</script>
+
+</body>
+</html>

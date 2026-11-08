@@ -125,4 +125,20 @@ function peuNumero(text) {
   ] })] });
 }
 
-module.exports = { d, COL, FONT, AMPLE, mm, img, run, rich, p, ratlleta, titolDosTons, seccio, subtitol, taula, pregunta, formula, caixa, numeracio, punt, capJuvenil, peuNumero, cellBorders };
+// Quadre en blanc per escriure la resposta.
+function quadre(alt) {
+  const b = { style: BorderStyle.SINGLE, size: 6, color: COL.corall };
+  return [new Table({ width: { size: AMPLE, type: WidthType.DXA }, columnWidths: [AMPLE], rows: [new TableRow({ cantSplit: true, height: { value: alt, rule: HeightRule.EXACT },
+    children: [new TableCell({ width: { size: AMPLE, type: WidthType.DXA }, borders: { top: b, bottom: b, left: b, right: b }, children: [new Paragraph({ children: [] })] })] })] }),
+    new Paragraph({ spacing: { after: 60 }, children: [] })];
+}
+
+// Pregunta amb quadre de resposta. alt en línies aproximades.
+function preguntaQ(num, text, linies = 4) {
+  return [new Paragraph({ spacing: { before: 180, after: 80, line: 300 }, keepNext: true, children: [
+    new TextRun({ text: num + "  ", font: FONT, bold: true, size: 22, color: COL.terracota }),
+    ...rich(text, { size: 20 }),
+  ] }), ...(linies ? quadre(linies * 420) : [])];
+}
+
+module.exports = { quadre, preguntaQ, d, COL, FONT, AMPLE, mm, img, run, rich, p, ratlleta, titolDosTons, seccio, subtitol, taula, pregunta, formula, caixa, numeracio, punt, capJuvenil, peuNumero, cellBorders };

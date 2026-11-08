@@ -10,6 +10,7 @@ L'objectiu és entendre les caixes botí i els sobres de cromos des de les matem
 - Connexió amb el full de Google: `servidor/INSTRUCCIONS.md`
 - Notes de disseny: `DISSENY.md`
 - Fitxa de l'alumnat: `docs/UWCL_Stars_fitxa_alumnat.docx`
+- Kit per crear el vostre joc: `kit/` (plantilla HTML d'un sol fitxer, full de càlcul i prompt). La plantilla es regenera amb `python3 eines/fes_plantilla.py` i el full amb `python3 eines/fes_full.py`.
 - Context per continuar el projecte: `CONTEXT.md`
 
 Joc educatiu sense diners reals. Valors de les jugadores: estimació pròpia.

@@ -28,11 +28,11 @@
   var FITES = [
     { id: "primer", nom: "Primer sobre", desc: "Obre el teu primer sobre.", fet: function (x) { return x.sobres >= 1; } },
     { id: "or", nom: "Brillantor", desc: "Aconsegueix el primer cromo d'or.", fet: function (x) { return x.tinc.or >= 1; } },
-    { id: "llegenda", nom: "Llegenda", desc: "Aconsegueix una de les 10 llegendes.", fet: function (x) { return x.tinc.llegenda >= 1; } },
+    { id: "llegenda", nom: "Llegenda", desc: "Aconsegueix una de les " + (TOTAL_RARESA.llegenda || 0) + " llegendes.", fet: function (x) { return x.tinc.llegenda >= 1; } },
     { id: "c50", nom: "Mig centenar", desc: "Tingues 50 cromos diferents.", fet: function (x) { return x.diferents >= 50; } },
     { id: "c100", nom: "Centenar", desc: "Tingues 100 cromos diferents.", fet: function (x) { return x.diferents >= 100; } },
     { id: "c200", nom: "Gran col·lecció", desc: "Tingues 200 cromos diferents.", fet: function (x) { return x.diferents >= 200; } },
-    { id: "gira", nom: "Gira europea", desc: "Tingues almenys un cromo de cada un dels 18 clubs.", fet: function (x) { return x.clubsAmb === CLUBS.length; } },
+    { id: "gira", nom: "Gira europea", desc: "Tingues almenys un cromo de cada un dels " + CLUBS.length + " clubs.", fet: function (x) { return x.clubsAmb === CLUBS.length; } },
     { id: "club", nom: "Plantilla completa", desc: "Completa tots els cromos d'un club.", fet: function (x) { return x.clubsComplets >= 1; } },
     { id: "onze", nom: "Onze titular", desc: "Omple les " + MIDA_EQUIP + " posicions del teu equip.", fet: function (x) { return x.onzeN === MIDA_EQUIP; } },
     { id: "onze80", nom: "Nivell Champions", desc: "Arriba a 80 de valor d'equip.", fet: function (x) { return x.valorOnze >= 80; } },
@@ -241,17 +241,18 @@
   }
 
   function paquet() {
-    return '<div class="paquet" id="paquet"><span class="t1">UWCL Stars</span><span class="t2">' + C.temporada + '</span><span class="t3">' + plural(C.cartesPerSobre, "cromo", "cromos") + "</span></div>";
+    return '<div class="paquet" id="paquet"><span class="t1">' + esc(C.nom) + '</span><span class="t2">' + C.temporada + '</span><span class="t3">' + plural(C.cartesPerSobre, "cromo", "cromos") + "</span></div>";
   }
 
   /* ---- Entrada -------------------------------------------------------- */
   function vistaEntrada() {
-    var mostra = ["Aitana Bonmatí", "Khadija Shaw", "Wendie Renard"].map(function (n) {
-      return CARTES_JOC.filter(function (c) { return c.nom === n; })[0];
-    });
+    // Tres cromos de mostra: els de més valor de tres grups diferents.
+    var vistos = {};
+    var mostra = CARTES_JOC.slice().sort(function (a, b) { return b.valor - a.valor; })
+      .filter(function (c) { if (vistos[c.club]) return false; vistos[c.club] = true; return true; }).slice(0, 3);
     return '<main class="pagina entrada"><div>' +
-      "<h1>UWCL Stars</h1>" +
-      '<p class="sub">' + CARTES_JOC.length + " cromos de les " + CLUBS.length + " plantilles de la Champions femenina " + C.temporada + ". Obre sobres, omple l'àlbum i munta el teu onze.</p>" +
+      "<h1>" + esc(C.nom) + "</h1>" +
+      '<p class="sub">' + esc(C.descripcio.replace("{cromos}", CARTES_JOC.length).replace("{grups}", CLUBS.length)) + "</p>" +
       '<form class="formulari" id="form-entrada" novalidate>' +
       (s.error ? '<p class="error" role="alert">' + esc(s.error) + "</p>" : "") +
       '<div class="camp"><label for="codi">El teu codi</label><input id="codi" autocomplete="off" autocapitalize="characters" maxlength="12" placeholder="SK42"' + (s.carregant ? " disabled" : "") + '><span class="ajuda">És el codi que t\'ha donat el professor. Amb aquest mateix codi recuperes la partida des de qualsevol ordinador.</span></div>' +
@@ -270,7 +271,7 @@
     var htmlPest = pest.map(function (p) {
       return '<button type="button" class="pestanya" data-vista="' + p[0] + '"' + (s.vista === p[0] ? ' aria-current="page"' : "") + ">" + p[1] + "</button>";
     }).join("");
-    return '<header class="cap"><div class="marca">UWCL Stars</div>' + (s.nom ? '<div class="qui">' + esc(s.nom) + "</div>" : "") + '<div class="comptadors">' +
+    return '<header class="cap"><div class="marca">' + esc(C.nom) + '</div>' + (s.nom ? '<div class="qui">' + esc(s.nom) + "</div>" : "") + '<div class="comptadors">' +
       "<span><b>" + e.gemmes + "</b>" + (e.gemmes === 1 ? "gemma" : "gemmes") + "</span>" +
       "<span><b>" + x.diferents + "/" + CARTES_JOC.length + "</b>cromos</span>" +
       '<span id="sincro" class="sincro ' + s.sincro + '">' + textSincro() + "</span>" +
