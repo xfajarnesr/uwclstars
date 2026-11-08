@@ -23,7 +23,7 @@ function onOpen() {
 
 function prepara() {
   var ss = SpreadsheetApp.getActive();
-  full_(ss, "Alumnes", ["codi", "nom (no surt al joc)", "gemmes extra"]);
+  full_(ss, "Alumnes", ["codi", "nom (surt al joc de l'alumne)", "gemmes extra"]);
   var ses = full_(ss, "Sessions", ["sessió", "gemmes", "activa"]);
   if (ses.getLastRow() < 2) {
     ses.getRange(2, 1, 6, 2).setValues([[1, 20], [2, 10], [3, 10], [4, 10], [5, 10], [6, 10]]);
@@ -110,7 +110,7 @@ function entra_(codiBrut) {
     var text = fila.valors[6];
     if (text) partida = JSON.parse(text);
   }
-  return { ok: true, codi: codi, atorgades: gemmesAtorgades_(alumne), partida: partida, laboratori: opcio_("laboratori") };
+  return { ok: true, codi: codi, nom: alumne.nom, atorgades: gemmesAtorgades_(alumne), partida: partida, laboratori: opcio_("laboratori") };
 }
 
 function desa_(d) {
@@ -168,7 +168,7 @@ function alumne_(codi) {
   if (n < 1 || !codi) return null;
   var v = sh.getRange(2, 1, n, 3).getValues();
   for (var i = 0; i < v.length; i++) {
-    if (netejaCodi_(v[i][0]) === codi) return { codi: codi, extra: Number(v[i][2]) || 0 };
+    if (netejaCodi_(v[i][0]) === codi) return { codi: codi, nom: String(v[i][1] || "").trim(), extra: Number(v[i][2]) || 0 };
   }
   return null;
 }

@@ -8,7 +8,7 @@ var CONFIG_JOC = {
 
   // Adreça de l'aplicació web de Google Apps Script (acaba en /exec).
   // Buida = mode local: la partida només es desa al navegador.
-  urlServidor: "",
+  urlServidor: "https://script.google.com/macros/s/AKfycbxUkwQGPgpFNexwnC92MSwJqiou2DyHByEqDfzh1Lo5pfTs6rERlSm-RoOtFaGIrCuZYQ/exec",
 
   // Mode local: gemmes que rep cada codi en entrar.
   // Amb servidor, les gemmes surten de la pestanya «Sessions» del full.
@@ -33,12 +33,27 @@ var CONFIG_JOC = {
   permetReiniciar: true,
 };
 
+// Categories dels cromos (al futbol, les posicions), en l'ordre en què surten
+// a la banqueta. Al camp es dibuixen al revés: l'última, a dalt.
 var POSICIONS_JOC = {
   POR: "Portera",
   DEF: "Defensa",
   MIG: "Migcampista",
   DAV: "Davantera",
 };
+var POSICIONS_PLURAL_JOC = { POR: "Porteres", DEF: "Defenses", MIG: "Migcampistes", DAV: "Davanteres" };
+
+// Formacions possibles: quantes places hi ha de cada categoria.
+// Totes han de sumar el mateix (aquí, 11).
+var FORMACIONS_JOC = {
+  "4-3-3": { POR: 1, DEF: 4, MIG: 3, DAV: 3 },
+  "4-4-2": { POR: 1, DEF: 4, MIG: 4, DAV: 2 },
+  "3-5-2": { POR: 1, DEF: 3, MIG: 5, DAV: 2 },
+  "3-4-3": { POR: 1, DEF: 3, MIG: 4, DAV: 3 },
+};
+
+// Noms de les rareses. Els colors són a css/estil.css.
+var RARESES_JOC = { bronze: "Bronze", plata: "Plata", or: "Or", llegenda: "Llegenda" };
 
 if (typeof FILES_CARTES === "undefined" && typeof require === "function") {
   var _c = require("./cartes.js");
@@ -51,5 +66,5 @@ var CARTES_JOC = FILES_CARTES.map(function (f, i) {
 });
 
 if (typeof module === "object" && module.exports) {
-  module.exports = { CONFIG_JOC: CONFIG_JOC, CLUBS_JOC: CLUBS_JOC, POSICIONS_JOC: POSICIONS_JOC, CARTES_JOC: CARTES_JOC };
+  module.exports = { CONFIG_JOC: CONFIG_JOC, CLUBS_JOC: CLUBS_JOC, POSICIONS_JOC: POSICIONS_JOC, FORMACIONS_JOC: FORMACIONS_JOC, RARESES_JOC: RARESES_JOC, CARTES_JOC: CARTES_JOC };
 }

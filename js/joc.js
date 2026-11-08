@@ -12,16 +12,14 @@
   CARTES_JOC.forEach(function (c) { perId[c.id] = c; });
   var atzar = Motor.creaAtzar();
   var CLAU = "uwcl-stars:";
-  var ORDRE_POS = ["POR", "DEF", "MIG", "DAV"];
-  var PLURAL_POS = { POR: "Porteres", DEF: "Defenses", MIG: "Migcampistes", DAV: "Davanteres" };
-  var NOM_RARESA = { bronze: "Bronze", plata: "Plata", or: "Or", llegenda: "Llegenda" };
+  // Tot el que és propi del futbol és a dades.js: posicions, formacions i rareses.
+  var ORDRE_POS = Object.keys(POSICIONS_JOC);
+  var PLURAL_POS = POSICIONS_PLURAL_JOC;
+  var NOM_RARESA = RARESES_JOC;
   var RARESES = ["llegenda", "or", "plata", "bronze"];
-  var FORMACIONS = {
-    "4-3-3": { DAV: 3, MIG: 3, DEF: 4, POR: 1 },
-    "4-4-2": { DAV: 2, MIG: 4, DEF: 4, POR: 1 },
-    "3-5-2": { DAV: 2, MIG: 5, DEF: 3, POR: 1 },
-    "3-4-3": { DAV: 3, MIG: 4, DEF: 3, POR: 1 },
-  };
+  var FORMACIONS = FORMACIONS_JOC;
+  var MIDA_EQUIP = (function () { var f = FORMACIONS[Object.keys(FORMACIONS)[0]]; return Object.keys(f).reduce(function (a, k) { return a + f[k]; }, 0); })();
+  function posDe(clau) { return clau.split(":")[0]; }
   var TOTAL_RARESA = {};
   CARTES_JOC.forEach(function (c) { TOTAL_RARESA[c.raresa] = (TOTAL_RARESA[c.raresa] || 0) + 1; });
   var CLUBS = Object.keys(CLUBS_JOC);
@@ -36,17 +34,17 @@
     { id: "c200", nom: "Gran col·lecció", desc: "Tingues 200 cromos diferents.", fet: function (x) { return x.diferents >= 200; } },
     { id: "gira", nom: "Gira europea", desc: "Tingues almenys un cromo de cada un dels 18 clubs.", fet: function (x) { return x.clubsAmb === CLUBS.length; } },
     { id: "club", nom: "Plantilla completa", desc: "Completa tots els cromos d'un club.", fet: function (x) { return x.clubsComplets >= 1; } },
-    { id: "onze", nom: "Onze titular", desc: "Omple les 11 posicions del teu onze.", fet: function (x) { return x.onzeN === 11; } },
+    { id: "onze", nom: "Onze titular", desc: "Omple les " + MIDA_EQUIP + " posicions del teu equip.", fet: function (x) { return x.onzeN === MIDA_EQUIP; } },
     { id: "onze80", nom: "Nivell Champions", desc: "Arriba a 80 de valor d'equip.", fet: function (x) { return x.valorOnze >= 80; } },
-    { id: "muralla", nom: "Muralla", desc: "Defensa completa amb jugadores d'or o llegenda.", fet: function (x) { return x.muralla; } },
-    { id: "unclub", nom: "Fidelitat", desc: "Onze complet amb jugadores d'un sol club.", fet: function (x) { return x.unClub; } },
+    { id: "muralla", nom: "Línia d'or", desc: "Una línia completa de l'equip (de més d'una plaça) amb cromos d'or o llegenda.", fet: function (x) { return x.muralla; } },
+    { id: "unclub", nom: "Fidelitat", desc: "Equip complet amb cromos d'un sol club.", fet: function (x) { return x.unClub; } },
     { id: "rep5", nom: "Quina mania", desc: "Tingues 5 còpies d'un mateix cromo.", fet: function (x) { return x.maxCopies >= 5; } },
     { id: "obrir100", nom: "100 cromos oberts", desc: "Obre 20 sobres en total.", fet: function (x) { return x.sobres >= 20; } },
   ];
 
   var app = document.getElementById("app");
   var s = {
-    codi: null, estat: null, onze: {}, formacio: "4-3-3", fitesVistes: [], atorgades: 0,
+    codi: null, nom: "", estat: null, onze: {}, formacio: Object.keys(FORMACIONS_JOC)[0], fitesVistes: [], atorgades: 0,
     vista: "sobres", darrer: null, lloc: null, suplent: null, detall: null,
     filtre: { club: "tots", raresa: "totes", mostra: "tots" },
     error: "", carregant: false, confirma: false, sincro: Servidor.actiu ? "ok" : "local", sincroError: "",
@@ -130,9 +128,9 @@
   function llocsFormacio() {
     var f = FORMACIONS[s.formacio];
     var llocs = [];
-    ["DAV", "MIG", "DEF", "POR"].forEach(function (pos) {
+    ORDRE_POS.slice().reverse().forEach(function (pos) {
       var linia = [];
-      for (var i = 0; i < f[pos]; i++) linia.push(pos + i);
+      for (var i = 0; i < f[pos]; i++) linia.push(pos + ":" + i);
       llocs.push(linia);
     });
     return llocs;
@@ -141,7 +139,7 @@
   function valorEquip() {
     var ids = Object.keys(s.onze).map(function (k) { return s.onze[k]; }).filter(Boolean);
     var suma = ids.reduce(function (t, id) { return t + perId[id].valor; }, 0);
-    return { mitjana: ids.length ? suma / 11 : 0, n: ids.length };
+    return { mitjana: ids.length ? suma / MIDA_EQUIP : 0, n: ids.length };
   }
 
   function estadistiques() {
@@ -169,7 +167,13 @@
     CARTES_JOC.forEach(function (c) { totalClub[c.club] = (totalClub[c.club] || 0) + 1; });
     var v = valorEquip();
     var ids = Object.keys(s.onze).map(function (k) { return s.onze[k]; }).filter(Boolean);
-    var defenses = Object.keys(s.onze).filter(function (k) { return k.slice(0, 3) === "DEF" && s.onze[k]; });
+    var linies = {};
+    Object.keys(s.onze).forEach(function (k) { if (s.onze[k]) (linies[posDe(k)] = linies[posDe(k)] || []).push(s.onze[k]); });
+    var muralla = ORDRE_POS.some(function (pos) {
+      var n = FORMACIONS[s.formacio][pos];
+      var l = linies[pos] || [];
+      return n > 1 && l.length === n && l.every(function (id) { var r = perId[id].raresa; return r === "or" || r === "llegenda"; });
+    });
     var clubsOnze = {};
     ids.forEach(function (id) { clubsOnze[perId[id].club] = true; });
     return {
@@ -180,8 +184,8 @@
       clubsComplets: CLUBS.filter(function (k) { return perClub[k] === totalClub[k]; }).length,
       perClub: perClub, totalClub: totalClub, maxCopies: maxCopies,
       onzeN: v.n, valorOnze: v.mitjana,
-      muralla: defenses.length === FORMACIONS[s.formacio].DEF && defenses.every(function (k) { var r = perId[s.onze[k]].raresa; return r === "or" || r === "llegenda"; }),
-      unClub: v.n === 11 && Object.keys(clubsOnze).length === 1,
+      muralla: muralla,
+      unClub: v.n === MIDA_EQUIP && Object.keys(clubsOnze).length === 1,
     };
   }
 
@@ -266,7 +270,7 @@
     var htmlPest = pest.map(function (p) {
       return '<button type="button" class="pestanya" data-vista="' + p[0] + '"' + (s.vista === p[0] ? ' aria-current="page"' : "") + ">" + p[1] + "</button>";
     }).join("");
-    return '<header class="cap"><div class="marca">UWCL Stars</div><div class="comptadors">' +
+    return '<header class="cap"><div class="marca">UWCL Stars</div>' + (s.nom ? '<div class="qui">' + esc(s.nom) + "</div>" : "") + '<div class="comptadors">' +
       "<span><b>" + e.gemmes + "</b>" + (e.gemmes === 1 ? "gemma" : "gemmes") + "</span>" +
       "<span><b>" + x.diferents + "/" + CARTES_JOC.length + "</b>cromos</span>" +
       '<span id="sincro" class="sincro ' + s.sincro + '">' + textSincro() + "</span>" +
@@ -280,7 +284,7 @@
         ? '<button type="button" class="boto-discret perill" data-accio="reinicia-si">Esborra la partida de ' + esc(s.codi) + '</button><button type="button" class="boto-discret" data-accio="reinicia-no">Cancel·la</button>'
         : '<button type="button" class="boto-discret" data-accio="reinicia">Torna a començar</button>';
     }
-    return '<footer class="peu"><p>Jugues amb el codi <b>' + esc(s.codi) + "</b>.</p>" +
+    return '<footer class="peu"><p>Jugues com a <b>' + esc(s.nom || s.codi) + "</b>" + (s.nom ? " (" + esc(s.codi) + ")" : "") + ".</p>" +
       '<button type="button" class="boto-discret" data-accio="surt">Surt</button>' + reiniciar + "</footer>";
   }
 
@@ -409,7 +413,7 @@
 
   /* ---- Onze ----------------------------------------------------------- */
   function posicioActiva() {
-    if (s.lloc) return s.lloc.slice(0, 3);
+    if (s.lloc) return posDe(s.lloc);
     if (s.suplent) return perId[s.suplent].pos;
     return null;
   }
@@ -425,7 +429,7 @@
     llocsFormacio().forEach(function (linia) {
       h += '<div class="linia">';
       linia.forEach(function (clau) {
-        var pos = clau.slice(0, 3);
+        var pos = posDe(clau);
         var id = s.onze[clau];
         var apagada = activa && activa !== pos ? "apagada" : "";
         var premut = s.lloc === clau;
@@ -437,7 +441,7 @@
     });
     h += '</div><div class="llegenda-colors" aria-label="Color de la qualitat">' +
       RARESES.slice().reverse().map(function (r) { return '<span><i class="punt ' + r + '"></i>' + NOM_RARESA[r] + "</span>"; }).join("") + "</div></div>" +
-      '<div class="panell"><div class="valor-equip"><b>' + (v.n ? coma(v.mitjana.toFixed(1)) : "0") + "</b><span>valor de l'equip, " + v.n + " d'11 jugadores</span></div>" +
+      '<div class="panell"><div class="valor-equip"><b>' + (v.n ? coma(v.mitjana.toFixed(1)) : "0") + "</b><span>valor de l'equip, " + v.n + " de " + MIDA_EQUIP + " places</span></div>" +
       '<div class="accions" style="justify-content:flex-start"><button type="button" class="boto" data-accio="millor">Posa les millors</button>' +
       (s.lloc && s.onze[s.lloc] ? '<button type="button" class="boto-discret" data-accio="treu">Envia-la a la banqueta</button>' : "") + "</div>" +
       vistaBanqueta(activa) + "</div></div></main>";
@@ -601,7 +605,7 @@
     s.onze = {};
     llocsFormacio().forEach(function (linia) {
       linia.forEach(function (clau) {
-        var pos = clau.slice(0, 3);
+        var pos = posDe(clau);
         var millor = CARTES_JOC.filter(function (c) { return c.pos === pos && s.estat.coleccio[c.id] && !usades[c.id]; })
           .sort(function (a, b) { return b.valor - a.valor; })[0];
         if (millor) { usades[millor.id] = true; s.onze[clau] = millor.id; }
@@ -615,13 +619,14 @@
 
   // En canviar de formació, cada posició conserva les seves millors jugadores.
   function canviaFormacio(f) {
-    var perPos = { POR: [], DEF: [], MIG: [], DAV: [] };
-    Object.keys(s.onze).forEach(function (k) { if (s.onze[k]) perPos[k.slice(0, 3)].push(s.onze[k]); });
+    var perPos = {};
+    ORDRE_POS.forEach(function (pos) { perPos[pos] = []; });
+    Object.keys(s.onze).forEach(function (k) { if (s.onze[k]) perPos[posDe(k)].push(s.onze[k]); });
     s.formacio = f;
     s.onze = {};
     ORDRE_POS.forEach(function (pos) {
       perPos[pos].sort(function (a, b) { return perId[b].valor - perId[a].valor; });
-      for (var i = 0; i < FORMACIONS[f][pos] && i < perPos[pos].length; i++) s.onze[pos + i] = perPos[pos][i];
+      for (var i = 0; i < FORMACIONS[f][pos] && i < perPos[pos].length; i++) s.onze[pos + ":" + i] = perPos[pos][i];
     });
     // Les places noves s'omplen amb les millors suplents.
     var usades = {};
@@ -629,7 +634,7 @@
     llocsFormacio().forEach(function (linia) {
       linia.forEach(function (clau) {
         if (s.onze[clau]) return;
-        var pos = clau.slice(0, 3);
+        var pos = posDe(clau);
         var millor = CARTES_JOC.filter(function (c) { return c.pos === pos && s.estat.coleccio[c.id] && !usades[c.id]; })
           .sort(function (a, b) { return b.valor - a.valor; })[0];
         if (millor) { usades[millor.id] = true; s.onze[clau] = millor.id; }
@@ -642,12 +647,12 @@
   }
 
   function tocaLloc(clau) {
-    var pos = clau.slice(0, 3);
+    var pos = posDe(clau);
     if (s.suplent && perId[s.suplent].pos === pos) {
       s.onze[clau] = s.suplent;
       s.suplent = null;
       canviOnze();
-    } else if (s.lloc && s.lloc !== clau && s.lloc.slice(0, 3) === pos) {
+    } else if (s.lloc && s.lloc !== clau && posDe(s.lloc) === pos) {
       var a = s.onze[s.lloc];
       var b = s.onze[clau];
       if (b) s.onze[s.lloc] = b; else delete s.onze[s.lloc];
@@ -662,7 +667,7 @@
   }
 
   function tocaSuplent(id) {
-    if (s.lloc && s.lloc.slice(0, 3) === perId[id].pos) {
+    if (s.lloc && posDe(s.lloc) === perId[id].pos) {
       s.onze[s.lloc] = id;
       s.lloc = null;
       canviOnze();
@@ -683,7 +688,7 @@
     var net = {};
     Object.keys(s.onze || {}).forEach(function (k) {
       var id = s.onze[k];
-      if (valides[k] && perId[id] && s.estat.coleccio[id] && perId[id].pos === k.slice(0, 3)) net[k] = id;
+      if (valides[k] && perId[id] && s.estat.coleccio[id] && perId[id].pos === posDe(k)) net[k] = id;
     });
     s.onze = net;
   }
@@ -697,11 +702,12 @@
     if (!Servidor.actiu) p = local;
     s.codi = codi;
     s.atorgades = dades.atorgades;
+    s.nom = dades.nom || "";
     s.laboratori = Servidor.actiu ? !!dades.laboratori : !!C.laboratoriLocal;
     Lab.inicia(codi, pinta);
     s.estat = p ? p.estat : Motor.estatInicial(C);
     s.onze = p && p.onze || {};
-    s.formacio = p && FORMACIONS[p.formacio] ? p.formacio : "4-3-3";
+    s.formacio = p && FORMACIONS[p.formacio] ? p.formacio : Object.keys(FORMACIONS)[0];
     s.fitesVistes = p && p.fitesVistes || [];
     actualitzaGemmes();
     normalitzaOnze();

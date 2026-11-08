@@ -80,6 +80,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1; text
 }
 .marca { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1; white-space: nowrap; color: var(--blanc); }
 .marca i { font-style: normal; color: var(--magenta); }
+.qui { font: 800 20px/1 var(--display); color: var(--plata-clara); padding: 4px 12px; border-radius: 999px; background: rgba(255, 45, 143, .25); white-space: nowrap; }
 .comptadors { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 15px; font-variant-numeric: tabular-nums; }
 .comptadors b { font-family: var(--display); font-size: 23px; font-weight: 800; color: var(--blanc); margin-right: 3px; }
 .pestanyes { display: flex; gap: 4px; margin-left: auto; }
