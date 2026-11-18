@@ -43,18 +43,21 @@ function prepara() {
   }
 
   var res = full_(ss, "Resum", ["", "valor"]);
-  var primera = "D"; var ultima = String.fromCharCode("D".charCodeAt(0) + CARTES_PER_SOBRE - 1);
-  var rang = "Sobres!" + String.fromCharCode(ultima.charCodeAt(0) + 1) + "2:" + String.fromCharCode(ultima.charCodeAt(0) + CARTES_PER_SOBRE) + "";
+  // Raresa: columnes després de data, codi, sobre i les cartes (amb 5 cartes, I:M).
+  // Cal fixar la fila final (1000): un rang obert com I2:M dóna #ERROR! al full.
+  var lletra = function (n) { return String.fromCharCode(64 + n); };
+  var primeraRaresa = 3 + CARTES_PER_SOBRE + 1;
+  var rang = "Sobres!" + lletra(primeraRaresa) + "2:" + lletra(primeraRaresa + CARTES_PER_SOBRE - 1) + "1000";
   res.getRange(2, 1, 9, 2).setValues([
-    ["Sobres oberts a la classe", "=COUNTA(Sobres!C2:C)"],
+    ["Sobres oberts a la classe", "=COUNTA(Sobres!C2:C1000)"],
     ["Cromos oberts", "=B2*" + CARTES_PER_SOBRE],
     ["Bronze", '=COUNTIF(' + rang + ',"bronze")'],
     ["Plata", '=COUNTIF(' + rang + ',"plata")'],
     ["Or", '=COUNTIF(' + rang + ',"or")'],
     ["Llegenda", '=COUNTIF(' + rang + ',"llegenda")'],
     ["% llegenda per cromo", '=IFERROR(B7/B3,0)'],
-    ["Gemmes de les sessions actives", '=SUMIF(Sessions!C2:C,TRUE,Sessions!B2:B)'],
-    ["Alumnes amb partida", "=COUNTA(Partides!A2:A)"],
+    ["Gemmes de les sessions actives", '=SUMPRODUCT((Sessions!C2:C100=TRUE)*Sessions!B2:B100)'],
+    ["Alumnes amb partida", "=COUNTA(Partides!A2:A1000)"],
   ]);
   res.getRange("B8").setNumberFormat("0.00%");
   SpreadsheetApp.getUi().alert("Full preparat. Afegeix els codis a «Alumnes» i publica l'script com a aplicació web.");
