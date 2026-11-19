@@ -79,22 +79,27 @@ def barres_raresa(obs, esp, marge, n):
 
 def tira_sort(punts):
     """Cada alumne com un punt segons el seu z (sort en or + llegenda). Banda ±2."""
-    W, H, ml = 640, 150, 30
+    W, H, ml = 640, 170, 30
     rang = 3.2
     def X(z): return ml + (W - 2 * ml) * (max(-rang, min(rang, z)) + rang) / (2 * rang)
     out = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="Sort de cada alumne">']
-    out.append(f'<rect x="{X(-2):.1f}" y="30" width="{X(2)-X(-2):.1f}" height="70" fill="#ffffff" opacity=".1" rx="6"/>')
-    out.append(f'<line x1="{X(0):.1f}" x2="{X(0):.1f}" y1="24" y2="106" stroke="#fff" stroke-dasharray="5 3"/>')
+    out.append(f'<rect x="{X(-2):.1f}" y="20" width="{X(2)-X(-2):.1f}" height="100" fill="#ffffff" opacity=".1" rx="6"/>')
+    out.append(f'<line x1="{X(0):.1f}" x2="{X(0):.1f}" y1="16" y2="124" stroke="#fff" stroke-dasharray="5 3"/>')
     for z in range(-3, 4):
-        out.append(f'<text x="{X(z):.1f}" y="128" text-anchor="middle" font-size="11" fill="#9fb0e0">{z}</text>')
-    out.append(f'<text x="{X(-2.9):.1f}" y="146" font-size="11" fill="#9fb0e0">menys sort</text>'
-               f'<text x="{X(2.9):.1f}" y="146" text-anchor="end" font-size="11" fill="#9fb0e0">més sort</text>')
-    pos = collections.defaultdict(int)
+        out.append(f'<text x="{X(z):.1f}" y="142" text-anchor="middle" font-size="11" fill="#9fb0e0">{z}</text>')
+    out.append(f'<text x="{X(-2.9):.1f}" y="162" font-size="11" fill="#9fb0e0">menys sort</text>'
+               f'<text x="{X(2.9):.1f}" y="162" text-anchor="end" font-size="11" fill="#9fb0e0">més sort</text>')
+    nivells = [0, -20, 20, -40, 40]
+    ultim = {}
     for nom, z in sorted(punts, key=lambda p: p[1]):
         xx = X(z)
-        k = round(xx / 18)
-        nivell = pos[k]; pos[k] += 1
-        y = 65 + 20 * ((nivell + 1) // 2) * (1 if nivell % 2 else -1)
+        for lv in nivells:
+            if abs(xx - ultim.get(lv, -999)) > 34:
+                break
+        else:
+            lv = nivells[len(ultim) % 5]
+        ultim[lv] = xx
+        y = 65 + lv * 0.9
         fora = abs(z) > 2
         out.append(f'<circle cx="{xx:.1f}" cy="{y:.1f}" r="6" fill="{"#ff4fa3" if fora else "#4fc3ff"}"/>'
                    f'<text x="{xx:.1f}" y="{y-9:.1f}" text-anchor="middle" font-size="9" fill="#fff">{esc(nom)}</text>')
@@ -185,7 +190,7 @@ main{{max-width:880px;margin:0 auto;padding:28px 18px 60px}}h1{{font-size:2rem;m
 table{{width:100%;border-collapse:collapse;font-size:.92rem}}th,td{{padding:7px 8px;border-bottom:1px solid var(--lin);text-align:left}}th{{color:var(--ap);font-weight:600}}
 small{{color:var(--ap)}}.pt{{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px}}.ok{{color:#6ee7a0;font-weight:700}}.fora{{color:#ff7aa8;font-weight:700}}
 .barra{{background:#0b1030;border-radius:99px;height:10px;min-width:120px}}.barra i{{display:block;height:10px;border-radius:99px;background:linear-gradient(90deg,var(--blau),var(--mag))}}
-svg{{width:100%;height:auto;display:block}}.nota{{color:var(--ap);font-size:.88rem}}.tw{{overflow-x:auto}}
+svg{{width:100%;height:auto;display:block}}@media print{{.box,tr,.k,.tw{{break-inside:avoid}}h2{{break-after:avoid}}}}.nota{{color:var(--ap);font-size:.88rem}}.tw{{overflow-x:auto}}
 </style></head><body><main>
 <p class="sub">Matemàtica aplicada · INS Manolo Hugué</p><h1>UWCL Stars: què ha passat a classe?</h1>
 <p class="sub">Això és el que ha sortit de debò als vostres sobres, comparat amb el que la probabilitat diu que hauria de sortir.</p>
